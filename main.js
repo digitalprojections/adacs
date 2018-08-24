@@ -528,7 +528,10 @@ function lot_kanri(event) {
             break;
         case "whatsapp":
             //apply a whatsapp mark to distinguish
-            //onclick="window.plugins.socialsharing.shareViaWhatsApp('Message via WhatsApp', null /* img */, null /* url */, function() {console.log('share ok')}            
+            window.plugins.socialsharing.shareViaWhatsApp('Message via WhatsApp', null /* img */, null /* url */, function() 
+            {
+                console.log('share ok')
+            });            
             console.log("whatsapp");
             break;
     }
