@@ -46,13 +46,9 @@ var speed_dial_content = `
       <ons-icon icon="md-help" value="ASK" onclick="lot_kanri(event)"></ons-icon>
     </ons-speed-dial-item>
     <ons-speed-dial-item style="background-color: #ffd4db;">
-      <ons-icon icon="md-close-circle" value="Cancel" onclick="lot_kanri(event)"></ons-icon>
-    </ons-speed-dial-item>
-    
+      <ons-icon icon="md-whatsapp" value="whatsapp" onclick="lot_kanri(event)"></ons-icon>
+    </ons-speed-dial-item>    
   </ons-speed-dial>`;
-
-
-
 
 function get_auction_names() {
     current_array = [];
@@ -526,6 +522,11 @@ function lot_kanri(event) {
             } else {
                 etppp.classList.add("Cancel");
             }
+            break;
+        case "whatsapp":
+            //apply a whatsapp mark to distinguish
+            //onclick="window.plugins.socialsharing.shareViaWhatsApp('Message via WhatsApp', null /* img */, null /* url */, function() {console.log('share ok')}            
+            console.log("whatsapp");
             break;
     }
     etppp.getElementsByClassName("buyer_remark")[0].saveStatus(status);
