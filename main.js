@@ -48,8 +48,8 @@ var speed_dial_content = `
     <ons-speed-dial-item style="background-color: #ffd4db;">
       <ons-icon icon="md-close-circle" value="Cancel" onclick="lot_kanri(event)"></ons-icon>
     </ons-speed-dial-item>    
-    <ons-speed-dial-item style="background-color: #24ff79;">
-      <ons-icon icon="md-whatsapp" value="whatsapp" onclick="lot_kanri(event)"></ons-icon>
+    <ons-speed-dial-item style="background-color: #24ff79;"  onclick="lot_kanri(event)" value="whatsapp">
+      <ons-icon icon="md-whatsapp" ></ons-icon>
     </ons-speed-dial-item>    
   </ons-speed-dial>`;
 
@@ -486,11 +486,11 @@ function close_modals() {
 
 function lot_kanri(event) {
 
-    var et = event.target;
+    var et = event.currentTarget;
     var etppp = document.getElementsByClassName(et.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("buyer_remark")[0].getAttribute("lotid"))[0];
     //console.log(et.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("buyer_remark")[0]);
     var status = et.getAttribute("value"); //manage lot status task directive
-
+    console.log(status);
     switch (status)
     {
         case "Done":
