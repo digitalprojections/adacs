@@ -1,5 +1,7 @@
 /**/
-
+.fab--bottom__right {
+    right: -55px;
+}
 .type{
     color: #009933;
 }

@@ -39,6 +39,9 @@ var speed_dial_content = `
     <ons-fab style="width:0;">
       <ons-icon icon="md-flag"></ons-icon>
     </ons-fab>
+    <ons-speed-dial-item style="background-color: #000000;">
+      <ons-icon icon="md-eye" value="eye" onclick="lot_kanri(event)"></ons-icon>
+    </ons-speed-dial-item>
     <ons-speed-dial-item style="background-color: #cdfdcd;">
       <ons-icon icon="md-check" value="Done" onclick="lot_kanri(event)"></ons-icon>
     </ons-speed-dial-item>
@@ -50,6 +53,9 @@ var speed_dial_content = `
     </ons-speed-dial-item>    
     <ons-speed-dial-item style="background-color: #24ff79;"  onclick="lot_kanri(event)" value="whatsapp">
       <ons-icon icon="md-whatsapp" ></ons-icon>
+    </ons-speed-dial-item>    
+    <ons-speed-dial-item style="background-color: ##24a7ff;"  onclick="lot_kanri(event)" value="group">
+      <ons-icon icon="md-group" ></ons-icon>
     </ons-speed-dial-item>    
   </ons-speed-dial>`;
 
