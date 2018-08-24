@@ -1005,7 +1005,7 @@ function show_lists(listname)
             $("#main_table ons-list-item.Done").removeClass("hidden");
             $("#heading2").text(company_name + ": " + $("#main_table tr.Done").length);
             indexName = "lotid";
-            get_by_status("Done");
+            get_by_status("Done");//local_data_mobid
 
             break;
         case "ask":
