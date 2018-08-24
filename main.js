@@ -528,7 +528,8 @@ function lot_kanri(event) {
             break;
         case "whatsapp":
             //apply a whatsapp mark to distinguish
-            window.plugins.socialsharing.shareViaWhatsApp('Message via WhatsApp', null /* img */, null /* url */, function() 
+            var ect3p = event.currentTarget.parentElement.parentElement.parentElement;
+            window.plugins.socialsharing.shareViaWhatsApp(company_name +", "+ ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", " + ect3p.getElementsByClassName("carname")[0].innerText, null /* img */, null /* url */, function() 
             {
                 console.log('share ok')
             });            
