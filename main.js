@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 var database_url = "https://www.jjinventorysystem.com/test/ajphp_v41.php"; //JJpurchase
-var username;
-var password;
+var username = Boolean(localStorage.username) ? localStorage.username : "";
+var password = Boolean(localStorage.password) ? localStorage.password : "";;
 var pager = !Boolean(localStorage.getItem("pager")) ? 10 : localStorage.getItem("pager");
 var startPage = 0; //pager value is the number of items/request results from this point onwards (indices of uniqunique_array) 
 var today;
@@ -170,9 +170,16 @@ function ajax(d) {
 
 var login = function () {
 
+if(Boolean(localStorage.username))
+{
+    username = localStorage.username;
+    password = localStorage.password;
+}else {
     username = document.getElementById('username').value;
     password = document.getElementById('password').value;
-
+}
+    
+    
     //
     document.querySelector('#loading_circle').show();
 
@@ -196,8 +203,9 @@ var login = function () {
 
             } else if (data.indexOf("Granted") > 0) {
                 //ACCESS GRANTED
+                localStorage.username = username;
+                localStorage.password = password;
                 session = true;
-
                 ons.notification.toast('Login Success!', {timeout: 1000, animation: 'fall'});
                 get_auction_names();
                 fn.load('auctions.html');
