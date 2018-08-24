@@ -302,9 +302,7 @@ function idb_add_lot(lot) {
     var caller = this;
     var tx = db.transaction("lot", "readwrite");
     var store = tx.objectStore("lot");
-
     store.put(lot);
-
     tx.oncomplete = function () {
         // All requests have succeeded and the transaction has committed.
         //console.log("lot saved");
