@@ -46,6 +46,9 @@ var speed_dial_content = `
       <ons-icon icon="md-help" value="ASK" onclick="lot_kanri(event)"></ons-icon>
     </ons-speed-dial-item>
     <ons-speed-dial-item style="background-color: #ffd4db;">
+      <ons-icon icon="md-close-circle" value="Cancel" onclick="lot_kanri(event)"></ons-icon>
+    </ons-speed-dial-item>    
+    <ons-speed-dial-item style="background-color: #24ff79;">
       <ons-icon icon="md-whatsapp" value="whatsapp" onclick="lot_kanri(event)"></ons-icon>
     </ons-speed-dial-item>    
   </ons-speed-dial>`;
