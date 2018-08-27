@@ -98,12 +98,36 @@
             </ons-page>
         </ons-splitter-side>
         <ons-splitter-content id="content" page="loginpage.html">
-
-
         </ons-splitter-content>
         <ons-splitter-mask style="opacity: 0; display: none;"></ons-splitter-mask>
     </ons-splitter>
-
+    
+    <ons-template id="detpage.html">
+  <ons-page id="detpage">
+    <ons-toolbar>
+      <div class="left">
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="md-menu"></ons-icon>
+        </ons-toolbar-button>
+          <ons-toolbar-button id="push-button" onclick="get_by_auction()">Back</ons-toolbar-button>
+      </div>        
+        <div class="center">
+          
+        
+        <ons-toolbar-button>
+            <ons-icon icon="">
+                Vehicle Details
+            </ons-icon>
+        </ons-toolbar-button>
+        
+        </div>
+    </ons-toolbar>    
+    <div id="carousel"></div>
+    <div style="text-align: center">
+    
+    </div>
+  </ons-page>
+</ons-template>
 
     <template id="loginpage.html">
         <ons-page id="loginpage">

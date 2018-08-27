@@ -93,9 +93,7 @@ function manage_object_stores(bdbName, storeName, rd) {
     }
 }
 
-function get_by_auction() {
-    company_name = $("#auction_names").val();
-    row_count = Number(document.querySelector("#auction_names")[document.querySelector("#auction_names").selectedIndex].getAttribute("count"));
+function get_by_auction() {          
     hyphen_today = today.split("/").reverse().join("-");
 
     storeName = company_name + hyphen_today;
@@ -121,25 +119,36 @@ function get_by_auction() {
             console.log(cursor, "row counts");
 
             if (cursor == row_count) {
-
                 request = index.openCursor();
-
                 request.onsuccess = function (event) {
-                    var cursor = event.target.result;
-                    if (cursor) {
-
-                        big_data.push(cursor.value);
-
-                        cursor.continue();
+                    var cursor = event.target.result;                    
+                    if (cursor) {                        
+                        if(ind_lot_active)
+                        {
+                            //collect data to ind_loind_lot_stack
+                            ind_lot_stack.push(cursor.value);
+                            cursor.continue();
+                        }
+                        else {
+                            big_data.push(cursor.value);
+                            cursor.continue();
+                        }
+                        
+                        
                     } else {
-                        create_unique_list();
-                        fn.load("main.html");
+                        if (ind_lot_active)
+                        {
+                            show_ind_data(ind_lot_stack);
+                            //will use ind_lot_stack created above
+                        }
+                        else {
+                            create_unique_list();
+                            fn.load("main.html");
+                        }
+                        
                     }
                 }
-
             } else {
-
-
                 var data = {
                     action: "bidders",
                     company_name: company_name,
@@ -199,9 +208,9 @@ try{
                 ons.notification.alert("No data within the range");
             }
             cursor.continue();
-        } else {
-            show_big_data(page_data);
-            page_data = [];
+        } else {           
+                show_big_data(page_data);
+                page_data = [];
             if (i < endPos-1 && i < current_array.length - 1)
             {
                 i++;
@@ -211,7 +220,7 @@ try{
                 console.log("i:", i, "startPage:", startPage, "endPos:", endPos, "current_array.length:",  current_array.length);
                 show_final_result();
             }
-            //
+            //            
         }
     };
     request.onerror = function (e)

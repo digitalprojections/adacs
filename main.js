@@ -20,6 +20,10 @@ var unique_array = [];
 var current_array = [];
 var new_entries = [];
 var updated_entries = [];
+var ind_lot_active;
+var ind_lot_index;
+var ind_lot_stack = []; //for raw data
+var ind_lot_array = []; //for the sorted array
 var indexName = "lot_no";
 var visited;
 var visdetObject = {};
@@ -40,7 +44,7 @@ var speed_dial_content = `
     <ons-fab style="width:0;">
       <ons-icon icon="md-flag"></ons-icon>
     </ons-fab>
-    <ons-speed-dial-item style="background-color: #000000;">
+    <ons-speed-dial-item style="background-color: #000000;" onclick="getcurcardetails();fn.load('detpage.html', {data: {title: 'Detail Page'}})">
       <ons-icon icon="md-eye" value="eye" onclick="lot_kanri(event)"></ons-icon>
     </ons-speed-dial-item>
     <ons-speed-dial-item style="background-color: #cdfdcd;">
@@ -59,6 +63,44 @@ var speed_dial_content = `
       <ons-icon icon="md-group" ></ons-icon>
     </ons-speed-dial-item>    
   </ons-speed-dial>`;
+
+var curcar = `<ons-carousel-item>
+     Carousel Item middle
+  </ons-carousel-item>`;
+
+var carousel_content = "";
+
+init_car_cont();
+
+function init_car_cont()
+{
+    carousel_content = `
+<ons-carousel style="height: 100%; width: 100%" initial-index="1" swipeable overscrollable auto-scroll auto-refresh>
+  <ons-carousel-item>
+     Carousel Item first
+  </ons-carousel-item>
+  ${curcar}
+    <ons-carousel-item>
+     Carousel Item last
+  </ons-carousel-item>
+</ons-carousel>
+<script>
+$("ons-carousel").on("postchange", function(){
+carousel_change(event);
+}
+);
+</script>
+`;
+}
+
+function getcurcardetails()
+{
+    var et = event.target;
+    var curcardetails = $(et).parent().parent().parent().parent();
+    ind_lot_index = current_array.indexOf(curcardetails.find(".lotno")[0].getAttribute("stupidlot").trim());
+    
+    
+}
 
 function get_auction_names() {
     current_array = [];
@@ -281,48 +323,42 @@ function create_unique_list()
     unique_array = [];
     new_entries = [];
     updated_entries = [];
-    try {
-        big_data.sort(function (a, b) {
-            return Number(a.exlot_no) - Number(b.exlot_no) || getRealNumber(Number(b.bid_price)) - getRealNumber(Number(a.bid_price));
-        });
-        for (i in big_data) {
-            var lotno = big_data[i]["exlot_no"];
-            if (Number(lotno) >= Number(startIndex) && Number(lotno) <= Number(endIndex))
-            {
+    
+        try {
+            big_data.sort(function (a, b) {
+                return Number(a.exlot_no) - Number(b.exlot_no) || getRealNumber(Number(b.bid_price)) - getRealNumber(Number(a.bid_price));
+            });
+            for (i in big_data) {
+                var lotno = big_data[i]["exlot_no"];
+                if (Number(lotno) >= Number(startIndex) && Number(lotno) <= Number(endIndex))
+                {
 //big_data[i]["detail_link"]:
 //big_data[i]["start_price"]:                
 //big_data[i]["chassis_code"]:
 //big_data[i]["extension"]:
 //big_data[i]["auction_sheet"]:
 //big_data[i]["rear_image"]:
-                if (!findTheSame(big_data[i]["lot_no"]))
-                {
-                    if (!checkTime(big_data[i]["created_at"]))
+                    if (!findTheSame(big_data[i]["lot_no"]))
                     {
-                        new_entries.push(big_data[i]["lot_no"]);
+                        if (!checkTime(big_data[i]["created_at"]))
+                        {
+                            new_entries.push(big_data[i]["lot_no"]);
+                        }
+                        if (!checkTime(big_data[i]["updated_at"]))
+                        {
+                            updated_entries.push(big_data[i]["lot_no"]);
+                        }
+                        unique_array.push(big_data[i]["lot_no"]);
                     }
-                    if (!checkTime(big_data[i]["updated_at"]))
-                    {
-                        updated_entries.push(big_data[i]["lot_no"]);
-                    }
-                    unique_array.push(big_data[i]["lot_no"]);
                 }
             }
-        }
-        //once the creation of the unique array is over, destroy the big_data to save memory;
-        big_data = undefined;
-        current_array = unique_array;
-        //now talk back to the memory module to give us the required chunk of data
-        //memory module then will call show_big_data, which is not BIG anymore
-
-        //console.log(unique_array.length, pager);   
-        //
-        show_selected_chunk(startPage, startPage + Number(pager), "lot_no");
-        //get_by_auction();
-    } catch (e)
-    {
-        ons.notification.alert("You must login first!");
-    }
+            big_data = undefined;
+            current_array = unique_array;
+            show_selected_chunk(startPage, startPage + Number(pager), "lot_no");
+        } catch (e)
+        {
+            ons.notification.alert("You must login first!");
+        }    
 }
 
 
@@ -332,7 +368,14 @@ function create_unique_list()
 //page_data[i]["extension"]:
 //page_data[i]["auction_sheet"]:
 //page_data[i]["rear_image"]:
-
+function show_ind_data(page_data)
+{
+    //the only function to run after data retrieval
+    page_data.sort(function (a, b) {
+        return Number(a.lot_no.substr(a.lot_no.indexOf("//") + 2)) - Number(b.lot_no.substr(b.lot_no.indexOf("//") + 2)) || getRealNumber(Number(b.bid_price)) - getRealNumber(Number(a.bid_price));
+    });    
+    console.log(page_data);
+}
 function show_big_data(page_data) {
 
     page_data.sort(function (a, b) {
@@ -555,11 +598,11 @@ function shareIt(ect3p)
         if (navigator.share) {
             navigator.share({
                 title: 'Check lot',
-                text: company_name + ", " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", " + ect3p.getElementsByTagName("img")[0].src, 
-                
+                text: company_name + ", " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", " + ect3p.getElementsByTagName("img")[0].src,
+                url: 'link with parameters set to open webapp',
             })
-            .then(() => console.log('Successful share'))
-            .catch((error) => console.log('Error sharing', error));
+                    .then(() => console.log('Successful share'))
+                    .catch((error) => console.log('Error sharing', error));
         }
     }
 
@@ -720,6 +763,10 @@ document.addEventListener('show', function (event) {
             $("#changeuser_but").show();
             //$("#refresh_but").show();            
             break;
+        case "detpage":            
+            $("#carousel").html(carousel_content);
+            // 
+            break;
         case "password":
             $("#changeuser_but").show();
             $("#auction_but").hide();
@@ -796,6 +843,17 @@ document.addEventListener('show', function (event) {
 
 });
 
+function carousel_change(event)
+{
+    console.log(event.activeIndex);
+    //temporary setup    
+    if (event.activeIndex !== 1 && ind_lot_index > 0 && ind_lot_index < current_array.length)
+    {
+        curcar = $("ons-carousel ons-carousel-item")[event.activeIndex].outerHTML;
+        init_car_cont();
+        $("#carousel").html(carousel_content);
+    }
+}
 function setRange()
 {
     startIndex = $("#start_index").val();
@@ -818,6 +876,8 @@ function show_range()
         create_unique_list();
         console.log("creating the list");
     } else {
+        company_name = $("#auction_names").val();
+        row_count = Number(document.querySelector("#auction_names")[document.querySelector("#auction_names").selectedIndex].getAttribute("count"));
         select_auction();
     }
 }
@@ -826,6 +886,7 @@ function select_auction() {
     console.log("select_auction");
     if (Boolean(setRange()))
     {
+
         get_by_auction();
     } else {
         ons.notification.alert("Bad lot range");
@@ -1015,6 +1076,10 @@ window.fn.load = function (page) {
             get_auction_names();
             fn.load("auctions.html");
             //show_lists("refresh");
+            break;
+        case "details":
+            fn.load("detpage.html");
+            //show details;            
             break;
         default:
             var content = document.getElementById('content');
