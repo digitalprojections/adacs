@@ -555,9 +555,11 @@ function shareIt(ect3p)
         if (navigator.share) {
             navigator.share({
                 title: 'Check lot',
-                text: company_name + ", " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", " + ect3p.getElementsByTagName("img")[0].src + " " + 
+                text: company_name + ", " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", " + ect3p.getElementsByTagName("img")[0].src, 
                 
-            }).then(() => console.log('Successful share')).catch((error) => console.log('Error sharing', error));
+            })
+            .then(() => console.log('Successful share'))
+            .catch((error) => console.log('Error sharing', error));
         }
     }
 
