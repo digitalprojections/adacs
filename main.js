@@ -5,7 +5,8 @@
  */
 var database_url = "https://www.jjinventorysystem.com/test/ajphp_v41.php"; //JJpurchase
 var username = Boolean(localStorage.username) ? localStorage.username : "";
-var password = Boolean(localStorage.password) ? localStorage.password : "";;
+var password = Boolean(localStorage.password) ? localStorage.password : "";
+;
 var pager = !Boolean(localStorage.getItem("pager")) ? 10 : localStorage.getItem("pager");
 var startPage = 0; //pager value is the number of items/request results from this point onwards (indices of uniqunique_array) 
 var today;
@@ -125,11 +126,11 @@ function ajax(d) {
                 }
 
                 try {
-                    if(!row_count)
+                    if (!row_count)
                     {
-                    row_count = Number(document.querySelector("#auction_names")[document.querySelector("#auction_names").selectedIndex].getAttribute("count"));
-                }
-                
+                        row_count = Number(document.querySelector("#auction_names")[document.querySelector("#auction_names").selectedIndex].getAttribute("count"));
+                    }
+
                 } catch (e)
                 {
                     ons.notification.alert("Login required!");
@@ -175,16 +176,16 @@ function ajax(d) {
 
 var login = function () {
 
-if(Boolean(localStorage.username))
-{
-    username = localStorage.username;
-    password = localStorage.password;
-}else {
-    username = document.getElementById('username').value;
-    password = document.getElementById('password').value;
-}
-    
-    
+    if (Boolean(localStorage.username))
+    {
+        username = localStorage.username;
+        password = localStorage.password;
+    } else {
+        username = document.getElementById('username').value;
+        password = document.getElementById('password').value;
+    }
+
+
     //
     document.querySelector('#loading_circle').show();
 
@@ -535,14 +536,33 @@ function lot_kanri(event) {
         case "whatsapp":
             //apply a whatsapp mark to distinguish
             var ect3p = event.currentTarget.parentElement.parentElement.parentElement;
-            window.plugins.socialsharing.shareViaWhatsApp(company_name +", "+ ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", " + ect3p.getElementsByClassName("carname")[0].innerText, null /* img */, null /* url */, function() 
-            {
-                console.log('share ok')
-            });            
+            shareIt(ect3p);
             console.log("whatsapp");
             break;
     }
     etppp.getElementsByClassName("buyer_remark")[0].saveStatus(status);
+}
+
+function shareIt(ect3p)
+{
+    try {
+        window.plugins.socialsharing.shareViaWhatsApp(company_name + ", " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", " + ect3p.getElementsByClassName("carname")[0].innerText, null /* img */, null /* url */, function ()
+        {
+            console.log('share ok')
+        });
+    } catch (e)
+    {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Check lot',
+                text: company_name + ", " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", " + ect3p.getElementsByClassName("carname")[0].innerText
+                
+            })
+                    .then(() => console.log('Successful share'))
+                    .catch((error) => console.log('Error sharing', error));
+        }
+    }
+
 }
 
 function manage_lots_status(lotid, status)
@@ -578,7 +598,7 @@ function show_calendar() {
 
     function onSuccess(date) {
         //console.log('Selected date: ' + date.getFullYear(), date.getMonth(), date.getDate());
-        today = format_my_date(date.getDate(), date.getMonth()+1) + date.getFullYear();
+        today = format_my_date(date.getDate(), date.getMonth() + 1) + date.getFullYear();
         document.querySelector("#selected_date").innerHTML = today;
         get_auction_names();
         fn.load('auctions.html');
@@ -598,11 +618,11 @@ function format_my_date(d, m)
 {
     var my_month = m;
     var my_date = d;
-    if (m< 10)
+    if (m < 10)
     {
         my_month = "0" + String(m);
-    } 
-    if (d< 10)
+    }
+    if (d < 10)
     {
         my_date = "0" + String(d);
     }
@@ -624,9 +644,9 @@ function resetDate() {
     if (mm < 10) {
         mm = '0' + mm
     }
-    if(!today)
+    if (!today)
     {
-    today = dd + '/' + mm + '/' + yyyy;
+        today = dd + '/' + mm + '/' + yyyy;
     }
     document.querySelector("#selected_date").innerHTML = today;
     $('#datepicker').val(today);
