@@ -761,7 +761,7 @@ function shareIt(ect3p)
             } catch (e) {
                 navigator.share({
                     title: $("#indinput").text(),
-                    text: company_name + ", " + $("h3")[0].innerText(),
+                    text: company_name + ", " + $("h3")[0].innerText,
                     url: 'link with parameters set to open webapp',
                 })
                         .then(() => console.log('Successful share'))
