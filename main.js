@@ -753,15 +753,15 @@ function shareIt(ect3p)
             try {
                 navigator.share({
                     title: 'Check lot',
-                    text: company_name + ", " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", " + ect3p.getElementsByTagName("img")[0].src,
-                    url: 'link with parameters set to open webapp',
+                    text: company_name + " " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + " "  + big_data.myIndexOf(ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot"))[0].auction_sheet + ", " + ect3p.getElementsByTagName("img")[0].src,
+                    
                 })
                         .then(() => console.log('Successful share'))
                         .catch((error) => console.log('Error sharing', error));
             } catch (e) {
                 navigator.share({
                     title: $("#indinput").text(),
-                    text: company_name + ", " + $("h3")[0].innerText,                    
+                    text: company_name + " " + $("h3")[0].innerText + " " + $("img")[0].src + " " + $("img")[1].src,
                 })
                         .then(() => console.log('Successful share'))
                         .catch((error) => console.log('Error sharing', error));
