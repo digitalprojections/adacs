@@ -22,6 +22,7 @@ var new_entries = [];
 var updated_entries = [];
 var ind_lot_active;
 var ind_lot_index;
+var ind_lot_lotno;
 var ind_lot_stack = []; //for raw data
 var ind_lot_array = []; //for the sorted array
 var indexName = "lot_no";
@@ -43,10 +44,7 @@ var speed_dial_content = `
   <ons-speed-dial position="bottom right" direction="left">
     <ons-fab style="width:0;">
       <ons-icon icon="md-flag"></ons-icon>
-    </ons-fab>
-    <ons-speed-dial-item style="background-color: #000000;" onclick="getcurcardetails();fn.load('detpage.html', {data: {title: 'Detail Page'}})">
-      <ons-icon icon="md-eye" value="eye" onclick="lot_kanri(event)"></ons-icon>
-    </ons-speed-dial-item>
+    </ons-fab>    
     <ons-speed-dial-item style="background-color: #cdfdcd;">
       <ons-icon icon="md-check" value="Done" onclick="lot_kanri(event)"></ons-icon>
     </ons-speed-dial-item>
@@ -60,12 +58,30 @@ var speed_dial_content = `
       <ons-icon icon="md-whatsapp" ></ons-icon>
     </ons-speed-dial-item>    
     <ons-speed-dial-item style="background-color: ##24a7ff;"  onclick="lot_kanri(event)" value="group">
-      <ons-icon icon="md-group" ></ons-icon>
+      <ons-icon icon="md-layers" ></ons-icon>
     </ons-speed-dial-item>    
   </ons-speed-dial>`;
 
-var curcar = `<ons-carousel-item>
-     Carousel Item middle
+var speed_dial_ind = `
+  <ons-speed-dial position="bottom right" direction="left" style="bottom:-50px">
+    <ons-fab style="width:0;">
+      <ons-icon icon="md-flag"></ons-icon>
+    </ons-fab>    
+    <ons-speed-dial-item style="background-color: #cdfdcd;">
+      <ons-icon icon="md-check" value="Done" onclick="lot_kanri(event)"></ons-icon>
+    </ons-speed-dial-item>
+    <ons-speed-dial-item style="background-color: #ffd280;">
+      <ons-icon icon="md-help" value="ASK" onclick="lot_kanri(event)"></ons-icon>
+    </ons-speed-dial-item>
+    <ons-speed-dial-item style="background-color: #ffd4db;">
+      <ons-icon icon="md-close-circle" value="Cancel" onclick="lot_kanri(event)"></ons-icon>
+    </ons-speed-dial-item>    
+    <ons-speed-dial-item style="background-color: #24ff79;"  onclick="lot_kanri(event)" value="whatsapp">
+      <ons-icon icon="md-whatsapp" ></ons-icon>
+    </ons-speed-dial-item>        
+  </ons-speed-dial>`;
+
+var curcar = `<ons-carousel-item>     
   </ons-carousel-item>`;
 
 var carousel_content = "";
@@ -75,17 +91,15 @@ init_car_cont();
 function init_car_cont()
 {
     carousel_content = `
-<ons-carousel style="height: 100%; width: 100%" initial-index="1" swipeable overscrollable auto-scroll auto-refresh>
-  <ons-carousel-item>
-     Carousel Item first
+<ons-carousel style="height: 100%; width: 100%" initial-index="1" swipeable overscrollable auto-scroll auto-refresh class="maincarousel">
+  <ons-carousel-item>     
   </ons-carousel-item>
   ${curcar}
-    <ons-carousel-item>
-     Carousel Item last
+    <ons-carousel-item>     
   </ons-carousel-item>
 </ons-carousel>
 <script>
-$("ons-carousel").on("postchange", function(){
+$("ons-carousel.maincarousel").on("postchange", function(){
 carousel_change(event);
 }
 );
@@ -97,11 +111,151 @@ function getcurcardetails()
 {
     var et = event.target;
     var curcardetails = $(et).parent().parent().parent().parent();
-    ind_lot_index = current_array.indexOf(curcardetails.find(".lotno")[0].getAttribute("stupidlot").trim());
-    
-    
+    ind_lot_lotno = curcardetails.find(".lotno")[0].getAttribute("stupidlot").trim();
+    ind_lot_index = current_array.indexOf(ind_lot_lotno);
+    fn.load('details_page.html', {data: {title: 'Detail Page'}});
+    //console.log(et, ind_lot_index, curcardetails);    
 }
 
+var myIndex = function (x)
+{
+    var arr = [];
+    for (i = 0; i < this.length; i++)
+    {
+        if (this[i].lot_no == x)
+        {
+            arr.push(this[i]);
+        }
+    }
+
+    arr.sort(function (a, b) {
+        return Number(a.lot_no.substr(a.lot_no.indexOf("//") + 2)) - Number(b.lot_no.substr(b.lot_no.indexOf("//") + 2)) || getRealNumber(Number(b.bid_price)) - getRealNumber(Number(a.bid_price));
+    });
+    return arr;
+}
+
+var populate_data = function ()
+{
+    var br = "<br>";
+
+    this.data = big_data.myIndexOf(ind_lot_lotno); //is an array of JSON objects
+    var caritem = this.getElementsByTagName("ons-carousel-item")[1];
+    
+    caritem.setAttribute("class", this.data[0].lotid);
+    //img START
+    var imgcarousel = document.createElement("ons-carousel");
+    imgcarousel.setAttribute("initial-index", 1);
+    imgcarousel.setAttribute("swipeable", "true");
+    imgcarousel.setAttribute("auto-scroll", "true");
+    imgcarousel.setAttribute("class", "img");
+
+    var imgcarouselitem0 = document.createElement("ons-carousel-item");
+    var imgcarouselitem1 = document.createElement("ons-carousel-item");
+    var imgcarouselitem2 = document.createElement("ons-carousel-item");
+    imgcarousel.appendChild(imgcarouselitem0);
+    imgcarousel.appendChild(imgcarouselitem1);
+    imgcarousel.appendChild(imgcarouselitem2);
+    var indimg = document.createElement("img");
+    indimg.style = "height:269px; width:100%";
+    indimg.src = getOldURL(this.data[0].auction_sheet);
+    var indimgf = document.createElement("img");
+    indimgf.style = "width:100%;";
+    indimgf.src = getOldURL(this.data[0].front_image);
+    var indimgr = document.createElement("img");
+    indimgr.style = "width:100%;";
+    indimgr.src = getOldURL(this.data[0].rear_image);
+    imgcarouselitem0.appendChild(indimg);
+    imgcarouselitem1.appendChild(indimgf);
+    imgcarouselitem2.appendChild(indimgr);
+
+    //indimg.style = "width:100%;";
+    //var imgdiv = document.createElement("div");
+    //imgdiv.setAttribute("class", "center-content");
+    //imgdiv.appendChild(indimg);
+    var indpagecol = document.createElement("ons-col");
+    indpagecol.setAttribute("style", "height:30%")
+    var indpagerow = document.createElement("ons-row");
+    indpagerow.appendChild(imgcarousel);
+    indpagerow.appendChild(indpagecol);
+    caritem.appendChild(indpagerow);
+    imgcarousel.refresh();
+    //img END
+
+    //info section wrappers
+    var indpagerow2 = document.createElement("ons-row");
+    var indpagecol21 = document.createElement("ons-col");
+    var indpagecol22 = document.createElement("ons-col");
+    indpagerow2.appendChild(indpagecol21);
+    indpagerow2.appendChild(indpagecol22);
+    //info section wrappers END
+
+    //aucname lot
+    var company_name = document.createElement("h2");
+    company_name.innerHTML = this.data[0].company_name;
+    indpagecol21.appendChild(company_name);
+    var exlot_no = document.createElement("h3");
+    exlot_no.innerHTML = this.data[0].exlot_no;
+    indpagecol21.appendChild(exlot_no);
+    //aucname lot END
+    caritem.appendChild(indpagerow2);
+
+    //bid price
+    var bid_price = document.createElement("h2");
+    bid_price.innerHTML = this.data[0].bid_price != "" ? this.data[0].bid_price : "how much?";
+    indpagecol22.appendChild(bid_price);
+    var remarks = document.createElement("h4");
+    remarks.innerHTML = this.data[0].remarks;
+    indpagecol22.appendChild(remarks);
+
+    //remaining details
+    var remaining_details_row = document.createElement("ons-row");
+    var remaining_details_col0 = document.createElement("ons-col");
+    var remaining_details_col1 = document.createElement("ons-col");
+    var remaining_details_col2 = document.createElement("ons-col");
+
+    remaining_details_col0.innerHTML = this.data[0].car_name + br + this.data[0].type + br + this.data[0].grade;
+    remaining_details_col1.innerHTML = this.data[0].year + br + this.data[0].shift + br + this.data[0].mileage;
+    remaining_details_col2.innerHTML = "検：" + this.data[0].inspect + br + "評：" + this.data[0].condition + " (" + this.data[0].ext_grade + "/" + this.data[0].int_grade + ")";
+
+    remaining_details_row.appendChild(remaining_details_col0);
+    remaining_details_row.appendChild(remaining_details_col1);
+    remaining_details_row.appendChild(remaining_details_col2);
+    caritem.appendChild(remaining_details_row);
+    //remaining details END
+
+    var ind_remark_row = document.createElement("ons-row");
+    var ind_remarkcol = document.createElement("ons-col");
+    var ind_input = document.createElement("div");
+    ind_input.id = "indinput";
+    ind_input.setAttribute("class", "buyer_remark");
+    ind_input.attachMessageData = attach_message_data;
+    ind_input.getByLotid = get_by_lotid;
+    ind_input.idbAddLot = idb_add_lot;
+    ind_input.updateLot = update_entry;
+    ind_input.saveStatus = save_status;
+    ind_input.getByLotid(); //also get the status?
+    ind_input.setAttribute("lotid", this.data[0].lotid);
+    
+    ind_remark_row.appendChild(ind_remarkcol);
+    ind_remarkcol.appendChild(ind_input);
+    caritem.appendChild(ind_remark_row);
+
+    //control&&management
+    var ind_contolpanel_row = document.createElement("ons-row");
+    var ind_conpancol = document.createElement("ons-col");
+    ind_contolpanel_row.appendChild(ind_conpancol);
+    ind_conpancol.innerHTML = speed_dial_ind;
+    caritem.appendChild(ind_contolpanel_row);
+    //control&&management END
+
+    document.querySelector("ons-speed-dial").showItems();
+    $(".fab--bottom__right").css("bottom", "0");
+    //
+    //logging
+    console.log(this.data[0], this.data);
+    
+    $(".buyer_remark")[0].getByLotid();
+}
 function get_auction_names() {
     current_array = [];
     startPage = 0;
@@ -323,42 +477,42 @@ function create_unique_list()
     unique_array = [];
     new_entries = [];
     updated_entries = [];
-    
-        try {
-            big_data.sort(function (a, b) {
-                return Number(a.exlot_no) - Number(b.exlot_no) || getRealNumber(Number(b.bid_price)) - getRealNumber(Number(a.bid_price));
-            });
-            for (i in big_data) {
-                var lotno = big_data[i]["exlot_no"];
-                if (Number(lotno) >= Number(startIndex) && Number(lotno) <= Number(endIndex))
-                {
+
+    try {
+        big_data.sort(function (a, b) {
+            return Number(a.exlot_no) - Number(b.exlot_no) || getRealNumber(Number(b.bid_price)) - getRealNumber(Number(a.bid_price));
+        });
+        for (i in big_data) {
+            var lotno = big_data[i]["exlot_no"];
+            if (Number(lotno) >= Number(startIndex) && Number(lotno) <= Number(endIndex))
+            {
 //big_data[i]["detail_link"]:
 //big_data[i]["start_price"]:                
 //big_data[i]["chassis_code"]:
 //big_data[i]["extension"]:
 //big_data[i]["auction_sheet"]:
 //big_data[i]["rear_image"]:
-                    if (!findTheSame(big_data[i]["lot_no"]))
+                if (!findTheSame(big_data[i]["lot_no"]))
+                {
+                    if (!checkTime(big_data[i]["created_at"]))
                     {
-                        if (!checkTime(big_data[i]["created_at"]))
-                        {
-                            new_entries.push(big_data[i]["lot_no"]);
-                        }
-                        if (!checkTime(big_data[i]["updated_at"]))
-                        {
-                            updated_entries.push(big_data[i]["lot_no"]);
-                        }
-                        unique_array.push(big_data[i]["lot_no"]);
+                        new_entries.push(big_data[i]["lot_no"]);
                     }
+                    if (!checkTime(big_data[i]["updated_at"]))
+                    {
+                        updated_entries.push(big_data[i]["lot_no"]);
+                    }
+                    unique_array.push(big_data[i]["lot_no"]);
                 }
             }
-            big_data = undefined;
-            current_array = unique_array;
-            show_selected_chunk(startPage, startPage + Number(pager), "lot_no");
-        } catch (e)
-        {
-            ons.notification.alert("You must login first!");
-        }    
+        }
+        //big_data = undefined;
+        current_array = unique_array;
+        show_selected_chunk(startPage, startPage + Number(pager), "lot_no");
+    } catch (e)
+    {
+        ons.notification.alert("You must login first!");
+    }
 }
 
 
@@ -368,14 +522,7 @@ function create_unique_list()
 //page_data[i]["extension"]:
 //page_data[i]["auction_sheet"]:
 //page_data[i]["rear_image"]:
-function show_ind_data(page_data)
-{
-    //the only function to run after data retrieval
-    page_data.sort(function (a, b) {
-        return Number(a.lot_no.substr(a.lot_no.indexOf("//") + 2)) - Number(b.lot_no.substr(b.lot_no.indexOf("//") + 2)) || getRealNumber(Number(b.bid_price)) - getRealNumber(Number(a.bid_price));
-    });    
-    console.log(page_data);
-}
+
 function show_big_data(page_data) {
 
     page_data.sort(function (a, b) {
@@ -391,7 +538,7 @@ function show_big_data(page_data) {
             if (i == 0)
             {
                 //lazy image
-                big_string += `<ons-list-item tappable class='top_bid ${page_data[i]["id"] } new_data_${checkTime(page_data[i]["created_at"]) } new_price_${ checkTime(page_data[i]["updated_at"]) }' onmousedown='toggle_children(event)'><div class='left'><ons-row><ons-col><img class='list-item__thumbnail' src='${ getOldURL(page_data[i]["front_image"]) }' onmousedown='show_full(event)'></ons-col></ons-row>`;
+                big_string += `<ons-list-item tappable class='top_bid ${page_data[i]["id"] } new_data_${checkTime(page_data[i]["created_at"]) } new_price_${ checkTime(page_data[i]["updated_at"]) }' onmousedown='toggle_children(event)'><div class='left'><ons-row><ons-col><img class='list-item__thumbnail' src='${ getOldURL(page_data[i]["front_image"]) }' onmousedown='getcurcardetails(event)'></ons-col></ons-row>`;
                 //hiding images temporarily
                 //big_string += "<tr class='top_bid new_data_" + checkTime(page_data[i]["created_at"]) + " new_price_" + checkTime(page_data[i]["updated_at"]) + "' onmousedown='toggle_children(event)'><td>";
                 //unique_array.push(page_data[i]["lot_no"]);
@@ -443,9 +590,9 @@ function show_big_data(page_data) {
             ${bidprice }
             </span></ons-col></ons-row><ons-row><ons-col><span  class='remarks'>
             ${page_data[i]["remarks"] }
-            </span></ons-col></ons-row><ons-row><ons-col><img class='buyer_remark hidden' src='img/glyphicons-188-more.png' lotid='
+            </span></ons-col></ons-row><ons-row><ons-col class="center-content"><img class='buyer_remark hidden' src='img/glyphicons-188-more.png' lotid='
             ${page_data[i]["id"] }
-            ' onmouseup='show_remarks()'></ons-col></ons-row><ons-row><ons-col><div class='buyer_remarks' onmousedown='show_remark_modal()'></div>
+            ' onmouseup='show_remarks()'></ons-col></ons-row><ons-row><ons-col class="center-content"><div class='buyer_remarks' onmousedown='show_remark_modal()'></div>
             </ons-col></ons-row></div><div class='typeshiftyear'><ons-row><ons-col><span>
             ${page_data[i]["type"] }
             </span></ons-col></ons-row><ons-row><ons-col><span class='atmt'>
@@ -483,11 +630,6 @@ function show_big_data(page_data) {
 
 }
 
-function show_full(event)
-{
-    $("#image_Modal").fadeIn(100);
-    $("#image_Modal img")[0].src = event.target.src;
-}
 
 function toggle_children(event)
 {
@@ -533,11 +675,22 @@ function toggle_children(event)
 function close_modals() {
     $("#remarkModal").fadeOut(100);
 }
-
+function indlot_kanri(event)
+{
+    var et = event.currentTarget;
+    etppp = et.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+    console.log();
+}
 function lot_kanri(event) {
 
     var et = event.currentTarget;
-    var etppp = document.getElementsByClassName(et.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("buyer_remark")[0].getAttribute("lotid"))[0];
+    try {
+        var etppp = document.getElementsByClassName(et.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("buyer_remark")[0].getAttribute("lotid"))[0];
+    } catch (e)
+    {
+        var etppp = et.parentElement.parentElement.parentElement.parentElement.parentElement;
+    }
+
     //console.log(et.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("buyer_remark")[0]);
     var status = et.getAttribute("value"); //manage lot status task directive
     console.log(status);
@@ -763,9 +916,12 @@ document.addEventListener('show', function (event) {
             $("#changeuser_but").show();
             //$("#refresh_but").show();            
             break;
-        case "detpage":            
+        case "details_page":
+            //load data from auction_data_module
             $("#carousel").html(carousel_content);
-            // 
+            var ind_page = document.querySelector("ons-carousel");
+            ind_page.populate_data = populate_data;
+            ind_page.populate_data();
             break;
         case "password":
             $("#changeuser_but").show();
@@ -845,13 +1001,21 @@ document.addEventListener('show', function (event) {
 
 function carousel_change(event)
 {
-    console.log(event.activeIndex);
-    //temporary setup    
-    if (event.activeIndex !== 1 && ind_lot_index > 0 && ind_lot_index < current_array.length)
+    console.log(event.target);
+    if (event.target.classList.contains("maincarousel"))
     {
-        curcar = $("ons-carousel ons-carousel-item")[event.activeIndex].outerHTML;
-        init_car_cont();
-        $("#carousel").html(carousel_content);
+        console.log(event.activeIndex);
+
+
+        //temporary setup    
+        if (event.activeIndex !== 1 && ind_lot_index > 0 && ind_lot_index < current_array.length)
+        {
+            curcar = $("ons-carousel ons-carousel-item")[event.activeIndex].outerHTML;
+            init_car_cont();
+            $("#carousel").html(carousel_content);
+        }
+    } else {
+        //the other one
     }
 }
 function setRange()
@@ -1078,7 +1242,7 @@ window.fn.load = function (page) {
             //show_lists("refresh");
             break;
         case "details":
-            fn.load("detpage.html");
+            fn.load("details_page.html");
             //show details;            
             break;
         default:

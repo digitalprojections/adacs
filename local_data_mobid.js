@@ -74,7 +74,7 @@ function save_status(status)
 {
     var the_target_img_object = this;
     var lotid = Number(the_target_img_object.getAttribute("lotid"));
-
+    console.log(lotid);
     var objectStore = db.transaction(["lot"], "readwrite").objectStore("lot");
     var request = objectStore.get(lotid);
     request.onerror = function (event) {
@@ -235,7 +235,7 @@ function get_by_status(status) {
         for (var i = 0; i < event.target.result.length; i++)
         {
             console.log(event.target.result[i]["created_at"], d);
-            if (event.target.result[i]["created_at"] > d && event.target.result[i]["status"]==status) {
+            if (event.target.result[i]["created_at"] > d && event.target.result[i]["status"] == status) {
                 console.log(event.target.result[i]["lotid"]);
                 current_array.push(event.target.result[i]["lotid"]);
             }
@@ -244,7 +244,7 @@ function get_by_status(status) {
         {
             show_selected_chunk(startPage, current_array.length, "lotid");
         } else {
-            ons.notification.toast("No data", {timeout:2000, animation:"ascend"});
+            ons.notification.toast("No data", {timeout: 2000, animation: "ascend"});
         }
     };
     objectStoreRequest.onerror = function (event) {
@@ -276,25 +276,37 @@ function get_by_lotid() {
 
 function attach_message_data(cph) {
     if (cph != undefined) {
-        try {
-            this.mdata = cph;
-            if (cph.message)
-            {
-                //show message dots
-                this.classList.remove("hidden");
-            } else if (cph.remarks != "" || cph.status != "")
-            {
-                //remarks not empty
-                //console.log(this, this.getAttribute("lotid"), document.getElementsByClassName(this.getAttribute("lotid"))[0]);
+
+        this.mdata = cph;
+        if (cph.message)
+        {
+            //show message dots
+            this.classList.remove("hidden");
+        } else if (cph.remarks != "" || cph.status != "")
+        {
+            //remarks not empty
+            //console.log(this, this.getAttribute("lotid"), document.getElementsByClassName(this.getAttribute("lotid"))[0]);
+            try {
                 document.getElementsByClassName(this.getAttribute("lotid"))[0].getElementsByClassName("buyer_remarks")[0].innerText = cph.remarks;
-                document.getElementsByClassName(this.getAttribute("lotid"))[0].classList.add(cph.status);
-                
+                if (cph.status != "")
+                {
+                    document.getElementsByClassName(this.getAttribute("lotid"))[0].classList.add(cph.status);
+                }
+
+            } catch (e)
+            {
+                console.log(e);
+                this.innerText = cph.remarks;
+                if (cph.status != "")
+                {
+                    document.getElementsByClassName(this.getAttribute("lotid"))[0].classList.add(cph.status);
+                }
             }
-            //console.log(cph);
-            
-        } catch (e) {
-            console.log(e.message);
+
+
         }
+        //console.log(cph);          
+
     }
 }
 

@@ -102,7 +102,7 @@ function get_by_auction() {
     if (bdb.objectStoreNames.contains(storeName))
     {
         //the storeName exists. Data also exists?
-        console.log(storeName, "exists, proceed to data retrieval");
+        console.log(storeName, "exists and data count is the same. Proceed to data retrieval");
 
         var store = bdb.transaction(storeName, "readonly").objectStore(storeName);
         var index = store.index('company_name, auction_date');
@@ -123,28 +123,15 @@ function get_by_auction() {
                 request.onsuccess = function (event) {
                     var cursor = event.target.result;                    
                     if (cursor) {                        
-                        if(ind_lot_active)
-                        {
-                            //collect data to ind_loind_lot_stack
-                            ind_lot_stack.push(cursor.value);
-                            cursor.continue();
-                        }
-                        else {
+                        
                             big_data.push(cursor.value);
                             cursor.continue();
-                        }
                         
                         
                     } else {
-                        if (ind_lot_active)
-                        {
-                            show_ind_data(ind_lot_stack);
-                            //will use ind_lot_stack created above
-                        }
-                        else {
+                            big_data.myIndexOf = myIndex;
                             create_unique_list();
                             fn.load("main.html");
-                        }
                         
                     }
                 }
