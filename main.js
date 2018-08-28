@@ -140,7 +140,7 @@ var populate_data = function ()
 
     this.data = big_data.myIndexOf(ind_lot_lotno); //is an array of JSON objects
     var caritem = this.getElementsByTagName("ons-carousel-item")[1];
-    
+
     caritem.setAttribute("class", this.data[0].lotid);
     //img START
     var imgcarousel = document.createElement("ons-carousel");
@@ -235,7 +235,7 @@ var populate_data = function ()
     ind_input.saveStatus = save_status;
     ind_input.getByLotid(); //also get the status?
     ind_input.setAttribute("lotid", this.data[0].lotid);
-    
+
     ind_remark_row.appendChild(ind_remarkcol);
     ind_remarkcol.appendChild(ind_input);
     caritem.appendChild(ind_remark_row);
@@ -253,7 +253,7 @@ var populate_data = function ()
     //
     //logging
     console.log(this.data[0], this.data);
-    
+
     $(".buyer_remark")[0].getByLotid();
 }
 function get_auction_names() {
@@ -748,14 +748,25 @@ function shareIt(ect3p)
         });
     } catch (e)
     {
+
         if (navigator.share) {
-            navigator.share({
-                title: 'Check lot',
-                text: company_name + ", " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", " + ect3p.getElementsByTagName("img")[0].src,
-                url: 'link with parameters set to open webapp',
-            })
-                    .then(() => console.log('Successful share'))
-                    .catch((error) => console.log('Error sharing', error));
+            try {
+                navigator.share({
+                    title: 'Check lot',
+                    text: company_name + ", " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", " + ect3p.getElementsByTagName("img")[0].src,
+                    url: 'link with parameters set to open webapp',
+                })
+                        .then(() => console.log('Successful share'))
+                        .catch((error) => console.log('Error sharing', error));
+            } catch (e) {
+                navigator.share({
+                    title: $("#indinput").text(),
+                    text: company_name + ", " + $("h3")[0].innerText(),
+                    url: 'link with parameters set to open webapp',
+                })
+                        .then(() => console.log('Successful share'))
+                        .catch((error) => console.log('Error sharing', error));
+            }
         }
     }
 
@@ -791,7 +802,6 @@ function show_calendar() {
         date: new Date(),
         mode: 'date'
     };
-
     function onSuccess(date) {
         //console.log('Selected date: ' + date.getFullYear(), date.getMonth(), date.getDate());
         today = format_my_date(date.getDate(), date.getMonth() + 1) + date.getFullYear();
@@ -801,7 +811,7 @@ function show_calendar() {
     }
 
     function onError(error) { // Android only
-        //alert('Error: ' + error);
+//alert('Error: ' + error);
     }
 
     if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android)/i)) {
@@ -846,7 +856,6 @@ function resetDate() {
     }
     document.querySelector("#selected_date").innerHTML = today;
     $('#datepicker').val(today);
-
     document.addEventListener("deviceready", function () {
         window.FirebasePlugin.getToken(function (token) {
             // save this server-side and use it to push notifications to this device
@@ -854,7 +863,6 @@ function resetDate() {
         }, function (error) {
             console.error(error);
         });
-
         // Get notified when a token is refreshed
         window.FirebasePlugin.onTokenRefresh(function (token) {
             // save this server-side and use it to push notifications to this device
@@ -862,7 +870,6 @@ function resetDate() {
         }, function (error) {
             alert(error);
         });
-
         // Get notified when the user opens a notification
         window.FirebasePlugin.onNotificationOpen(function (notification) {
             console.log(JSON.stringify(notification));
@@ -871,7 +878,6 @@ function resetDate() {
             console.error(error);
         });
     }, false);
-
 }
 
 
@@ -895,10 +901,8 @@ function check_kaishusu(d) {
 
 document.addEventListener('show', function (event) {
     var page = event.target;
-
-    console.log(page.id);// can detect which page
+    console.log(page.id); // can detect which page
     resetDate();
-
     switch (page.id)
     {
         case "main":
@@ -986,7 +990,6 @@ document.addEventListener('show', function (event) {
         script.setAttribute('onreadystatechange', 'if (this.readyState === "complete") this.onload()');
         script.src = 'auction_data_module.js';
         document.getElementsByTagName('body')[0].appendChild(script);
-
         scriptj = document.createElement('script');
         scriptj.type = 'text/javascript';
         scriptj.async = true;
@@ -994,19 +997,15 @@ document.addEventListener('show', function (event) {
         scriptj.setAttribute('onreadystatechange', 'if (this.readyState === "complete") this.onload()');
         scriptj.src = 'local_data_mobid.js';
         document.getElementsByTagName('body')[0].appendChild(scriptj);
-
     }
 
 });
-
 function carousel_change(event)
 {
     console.log(event.target);
     if (event.target.classList.contains("maincarousel"))
     {
         console.log(event.activeIndex);
-
-
         //temporary setup    
         if (event.activeIndex !== 1 && ind_lot_index > 0 && ind_lot_index < current_array.length)
         {
@@ -1033,7 +1032,6 @@ function setRange()
 function show_range()
 {
     document.querySelector('#loading_circle').show();
-
     //local data first
     if (big_data)
     {
@@ -1107,7 +1105,6 @@ function fixDate(rd)
     nd = nd.join(" ");
 //nd = Date.parse(nd);
     return nd;
-
 }
 
 function checkTime(ct)
@@ -1127,13 +1124,13 @@ function checkTime(ct)
         //CLEARING YEAR
         if (today.getFullYear() == d.getFullYear())
         {
-            //this or previous month OK    
+//this or previous month OK    
             if (today.getMonth() == d.getMonth())
             {
-                //clearing date
+//clearing date
                 if (today.getDate() == d.getDate())
                 {
-                    //clearing hours
+//clearing hours
                     if (d.getHours() < time_adjuster)
                     {
                         bul = true;
@@ -1155,7 +1152,6 @@ function checkTime(ct)
     }
 
     return bul;
-
 }
 
 function getRealCount()
@@ -1208,12 +1204,10 @@ function get_true_false(v)
 ////////////////////////////////////////////
 
 window.fn = {};
-
 window.fn.open = function () {
     var menu = document.getElementById('menu');
     menu.open();
 };
-
 window.fn.load = function (page) {
 
     switch (arguments[0])
@@ -1256,7 +1250,6 @@ window.fn.load = function (page) {
 
 
 };
-
 function show_lists(listname)
 {
 
@@ -1276,7 +1269,7 @@ function show_lists(listname)
             $("#main_table ons-list-item.Done").removeClass("hidden");
             $("#heading2").text(company_name + ": " + $("#main_table tr.Done").length);
             indexName = "lotid";
-            get_by_status("Done");//local_data_mobid
+            get_by_status("Done"); //local_data_mobid
 
             break;
         case "ask":
@@ -1284,7 +1277,6 @@ function show_lists(listname)
             $("#heading2").text(company_name + ": " + $("#main_table tr.ASK").length);
             indexName = "lotid";
             get_by_status("ASK");
-
             break;
         case "cancel":
             $("#main_table ons-list-item.Cancel").removeClass("hidden");
@@ -1308,7 +1300,6 @@ function show_lists(listname)
             current_array = updated_entries;
             show_selected_chunk(startPage, startPage + Number(pager), indexName);
             break;
-
     }
 }
 
