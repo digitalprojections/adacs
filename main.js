@@ -201,7 +201,7 @@ var populate_data = function ()
 
     //bid price
     var bid_price = document.createElement("h2");
-    bid_price.innerHTML = this.data[0].bid_price != "" ? this.data[0].bid_price : "how much?";
+    bid_price.innerHTML = this.data[0].bid_price != "" ? this.data[0].bid_price : "?";
     indpagecol22.appendChild(bid_price);
     var remarks = document.createElement("h4");
     remarks.innerHTML = this.data[0].remarks;
@@ -733,7 +733,6 @@ function lot_kanri(event) {
             //apply a whatsapp mark to distinguish
             var ect3p = event.currentTarget.parentElement.parentElement.parentElement;
             shareIt(ect3p);
-            console.log("whatsapp");
             break;
     }
     etppp.getElementsByClassName("buyer_remark")[0].saveStatus(status);
@@ -761,7 +760,7 @@ function shareIt(ect3p)
             } catch (e) {
                 navigator.share({
                     title: $("#indinput").text(),
-                    text: company_name + " " + $("h3")[0].innerText + " " + $("img")[0].src + " " + $("img")[1].src,
+                    text: company_name + " lot:" + $("h3")[0].innerText + " bid:" + $("h2")[0].innerText + " " + " auction sheet:" + $("img")[0].src + " front image:" + $("img")[1].src,
                 })
                         .then(() => console.log('Successful share'))
                         .catch((error) => console.log('Error sharing', error));
