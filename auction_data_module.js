@@ -95,7 +95,7 @@ function manage_object_stores(bdbName, storeName, rd) {
 
 function get_by_auction() {          
     hyphen_today = today.split("/").reverse().join("-");
-
+    
     storeName = company_name + hyphen_today;
 
     console.log("get_by_auct", company_name, hyphen_today);
@@ -217,7 +217,7 @@ try{
 }
 
 function show_final_result() {
-    console.log('Entries all displayed.');
+    console.log('sample data', big_string.substr(0, 100));
     $("#main_table").html(big_string);
     big_string = "";
     document.querySelector('#loading_circle').hide();
@@ -229,7 +229,6 @@ function show_final_result() {
         this.saveStatus = save_status;
         this.getByLotid(); //also get the status?
     });
-    setTimeout(function (){
         startPage = get_startPage();
     if (startPage < Number(pager))
     {
@@ -248,8 +247,8 @@ function show_final_result() {
     //startPage/Number(pager)+1 //get the current page
 
     $("#heading2").text(get_shortName(company_name) + ": " + String($("#main_table ons-list-item.top_bid").length) + ", " + (startPage/Number(pager)+1) + "/" + Math.ceil(current_array.length/pager));
-    },3000);
     
+    console.log('Entries all displayed.');
 }
 function update_entry()
 {

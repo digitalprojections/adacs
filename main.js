@@ -6,7 +6,6 @@
 var database_url = "https://www.jjinventorysystem.com/test/ajphp_v41.php"; //JJpurchase
 var username = Boolean(localStorage.username) ? localStorage.username : "";
 var password = Boolean(localStorage.password) ? localStorage.password : "";
-;
 var pager = !Boolean(localStorage.getItem("pager")) ? 10 : localStorage.getItem("pager");
 var startPage = 0; //pager value is the number of items/request results from this point onwards (indices of uniqunique_array) 
 var today;
@@ -447,7 +446,7 @@ function get_startPage()
 {
 
     try {
-        return current_array.indexOf($(".lotno").eq(0).attr("stupidlot").trim()) >= 0 ? current_array.indexOf($(".lotno").eq(0).attr("stupidlot").trim()) : 0;
+        return current_array.indexOf($(".lotno").eq(0).attr("stupidlot")) >= 0 ? current_array.indexOf($(".lotno").eq(0).attr("stupidlot").trim()) : 0;
     } catch (e)
     {
         console.log(e.message);
@@ -465,7 +464,7 @@ function get_shortName(c)
         c = c.split(" ");
         for (var i = 0; i < c.length; i++)
         {
-            c[i] = c[i].substr(0, 3);
+            c[i] = c[i].length>3 ? c[i].substr(0, 3) : c[i];
         }
         c = c.join("-");
     }
@@ -1029,14 +1028,15 @@ function setRange()
 
 function show_range()
 {
+    company_name = $("#auction_names").val();
     document.querySelector('#loading_circle').show();
     //local data first
     if (big_data)
     {
-        create_unique_list();
+        get_by_auction();
         console.log("creating the list");
     } else {
-        company_name = $("#auction_names").val();
+     
         row_count = Number(document.querySelector("#auction_names")[document.querySelector("#auction_names").selectedIndex].getAttribute("count"));
         select_auction();
     }
