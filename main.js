@@ -451,7 +451,7 @@ function get_startPage()
 {
 
     try {
-        return current_array.indexOf($(".lotno").eq(0).attr("stupidlot")) >= 0 ? current_array.indexOf($(".lotno").eq(0).attr("stupidlot").trim()) : 0;
+        return current_array.indexOf($(".lotno").eq(0).attr("stupidlot").trim()) >= 0 ? current_array.indexOf($(".lotno").eq(0).attr("stupidlot").trim()) : 0;
     } catch (e)
     {
         console.log(e.message);
