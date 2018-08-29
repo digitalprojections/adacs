@@ -230,7 +230,8 @@ var populate_data = function ()
     var ind_remarkcol = document.createElement("ons-col");
     var ind_input = document.createElement("div");
     ind_input.id = "indinput";
-    ind_input.setAttribute("class", "buyer_remark");
+    ind_input.setAttribute("class", "buyer_remark");    
+    ind_input.setAttribute("onmousedown","show_remark_modal()");
     ind_input.attachMessageData = attach_message_data;
     ind_input.getByLotid = get_by_lotid;
     ind_input.idbAddLot = idb_add_lot;
