@@ -80,37 +80,60 @@ var speed_dial_ind = `
     </ons-speed-dial-item>        
   </ons-speed-dial>`;
 
-var curcar = `<ons-carousel-item>     
-  </ons-carousel-item>`;
+var curcar = document.createElement("ons-carousel-item");
+curcar.setAttribute("class","mainitem");
 
-var carousel_content = "";
-
-init_car_cont();
-
-function init_car_cont()
+function generate_carousel_content()
 {
-    carousel_content = `
-<ons-carousel style="height: 100%; width: 100%" initial-index="1" swipeable overscrollable auto-scroll auto-refresh class="maincarousel">
-  <ons-carousel-item>     
-  </ons-carousel-item>
-  ${curcar}
-    <ons-carousel-item>     
-  </ons-carousel-item>
-</ons-carousel>
-<script>
+    curcar.innerHTML = "";
+    var carousel = document.createElement("ons-carousel");
+    carousel.setAttribute("initial-index", 1); 
+    carousel.setAttribute("style", "height: 100%; width: 100%");
+    carousel.setAttribute("swipeable", "true");
+    carousel.setAttribute("overscrollable", "true");
+    carousel.setAttribute("auto-scroll", "true");
+    carousel.setAttribute("auto-refresh", "true");
+    carousel.setAttribute("class", "maincarousel");
+    
+    var item1 = document.createElement("ons-carousel-item");
+    var item3 = document.createElement("ons-carousel-item");
+    
+    if (ind_lot_index==0)
+    {    
+        carousel.setAttribute("initial-index", 0); 
+        carousel.append(curcar);
+        carousel.append(item3);
+    }
+    else if (ind_lot_index>0 && ind_lot_index<current_array.length){
+        carousel.append(item1);
+        carousel.append(curcar);
+        carousel.append(item3);
+    }
+    else if(ind_lot_index==current_array.length)
+    {
+        carousel.append(item1);
+        carousel.append(curcar);    
+    }
+        
+    
+    
+    var scr = document.createElement("script");
+    scr.innerHTML = `
 $("ons-carousel.maincarousel").on("postchange", function(){
 carousel_change(event);
 }
 );
-</script>
 `;
+    carousel.append(scr);
+    
+    return carousel;
 }
 
 function getcurcardetails()
 {
     var et = event.target;
     var curcardetails = $(et).parent().parent().parent().parent();
-    ind_lot_lotno = curcardetails.find(".lotno")[0].getAttribute("stupidlot").trim();
+    ind_lot_lotno = curcardetails.find(".lotno")[0].getAttribute("stupidlot").trim();    
     ind_lot_index = current_array.indexOf(ind_lot_lotno);
     fn.load('details_page.html', {data: {title: 'Detail Page'}});
     //console.log(et, ind_lot_index, curcardetails);    
@@ -138,9 +161,9 @@ var populate_data = function ()
     var br = "<br>";
 
     this.data = big_data.myIndexOf(ind_lot_lotno); //is an array of JSON objects
-    var caritem = this.getElementsByTagName("ons-carousel-item")[1];
+    var caritem = this;
 
-    caritem.setAttribute("class", this.data[0].lotid);
+    caritem.classList.add(this.data[0].lotid);
     //img START
     var imgcarousel = document.createElement("ons-carousel");
     imgcarousel.setAttribute("initial-index", 0);
@@ -941,10 +964,10 @@ document.addEventListener('show', function (event) {
             break;
         case "details_page":
             //load data from auction_data_module
-            $("#carousel").html(carousel_content);
-            var ind_page = document.querySelector("ons-carousel");
-            ind_page.populate_data = populate_data;
-            ind_page.populate_data();
+            $("#carousel").html(generate_carousel_content());//manage carousel initiation in a better way
+            
+            curcar.populate_data = populate_data;
+            curcar.populate_data();
             break;
         case "password":
             $("#changeuser_but").show();
@@ -1026,12 +1049,20 @@ function carousel_change(event)
     {
         console.log(event.activeIndex);
         //temporary setup    
-        if (event.activeIndex !== 1 && ind_lot_index > 0 && ind_lot_index < current_array.length)
-        {
-            curcar = $("ons-carousel ons-carousel-item")[event.activeIndex].outerHTML;
-            init_car_cont();
-            $("#carousel").html(carousel_content);
-        }
+            //curcar = $("ons-carousel ons-carousel-item")[event.activeIndex].outerHTML;            
+            
+            if(event.activeIndex==0)
+            {
+                ind_lot_index--;
+                ind_lot_lotno = current_array[ind_lot_index];                
+            }
+            else {
+                ind_lot_index++;
+                ind_lot_lotno = current_array[ind_lot_index];
+            }
+            $("#carousel").html(generate_carousel_content()); 
+            curcar.populate_data();
+
     } else {
         //the other one
     }
