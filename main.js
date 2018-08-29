@@ -267,6 +267,15 @@ var populate_data = function ()
     else {
         $("ons-row").css({"float":"none", "width":"100%"});
     }
+    ons.orientation.on('change', function() {
+        if(ons.orientation.isLandscape())
+    {
+        $("ons-row").css({"float":"left", "width":"49%"});
+    }
+    else {
+        $("ons-row").css({"float":"none", "width":"100%"});
+    }
+    });
 }
 function get_auction_names() {
     current_array = [];
