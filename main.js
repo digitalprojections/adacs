@@ -81,11 +81,12 @@ var speed_dial_ind = `
   </ons-speed-dial>`;
 
 var curcar = document.createElement("ons-carousel-item");
-curcar.setAttribute("class","mainitem");
+
 
 function generate_carousel_content()
 {
     curcar.innerHTML = "";
+    curcar.setAttribute("class","mainitem");
     var carousel = document.createElement("ons-carousel");
     carousel.setAttribute("initial-index", 1); 
     carousel.setAttribute("style", "height: 100%; width: 100%");
