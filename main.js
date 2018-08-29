@@ -119,12 +119,7 @@ function generate_carousel_content()
     
     
     var scr = document.createElement("script");
-    scr.innerHTML = `
-$("ons-carousel.maincarousel").on("postchange", function(){
-carousel_change(event);
-}
-);
-`;
+    scr.innerHTML = '$("ons-carousel.maincarousel").on("postchange", function(){carousel_change(event);});';
     carousel.append(scr);
     
     return carousel;
@@ -280,8 +275,7 @@ var populate_data = function ()
     $(".fab--bottom__right").css("bottom", "0");
     //
     //logging
-    console.log(this.data[0], this.data);
-
+    console.log(curcar);
     $(".buyer_remark")[0].getByLotid();
     
     if(ons.orientation.isLandscape())
