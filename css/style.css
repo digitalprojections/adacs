@@ -139,7 +139,7 @@ div.buyer_remarks {
 }
 
 div#indinput{
-    height: 20px;
+    min-height: 20px;
     background-color: darkseagreen;
     border-radius: 3px;
     color: white;
