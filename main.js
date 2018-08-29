@@ -264,6 +264,9 @@ var populate_data = function ()
     {
         $("ons-row").css({"float":"left", "width":"49%"});
     }
+    else {
+        $("ons-row").css({"float":"none", "width":"100%"});
+    }
 }
 function get_auction_names() {
     current_array = [];
