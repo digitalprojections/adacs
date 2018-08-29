@@ -143,7 +143,7 @@ var populate_data = function ()
     caritem.setAttribute("class", this.data[0].lotid);
     //img START
     var imgcarousel = document.createElement("ons-carousel");
-    imgcarousel.setAttribute("initial-index", 1);
+    imgcarousel.setAttribute("initial-index", 0);
     imgcarousel.setAttribute("swipeable", "true");
     imgcarousel.setAttribute("auto-scroll", "true");
     imgcarousel.setAttribute("class", "img");
