@@ -86,42 +86,41 @@ var curcar = document.createElement("ons-carousel-item");
 function generate_carousel_content()
 {
     curcar.innerHTML = "";
-    curcar.setAttribute("class","mainitem");
+    curcar.setAttribute("class", "mainitem");
     var carousel = document.createElement("ons-carousel");
-    carousel.setAttribute("initial-index", 1); 
+    carousel.setAttribute("initial-index", 1);
     carousel.setAttribute("style", "height: 100%; width: 100%");
     carousel.setAttribute("swipeable", "true");
     carousel.setAttribute("overscrollable", "true");
     carousel.setAttribute("auto-scroll", "true");
     carousel.setAttribute("auto-refresh", "true");
     carousel.setAttribute("class", "maincarousel");
-    
+
     var item1 = document.createElement("ons-carousel-item");
     var item3 = document.createElement("ons-carousel-item");
-    
-    if (ind_lot_index==0)
-    {    
-        carousel.setAttribute("initial-index", 0); 
+
+    if (ind_lot_index == 0)
+    {
+        carousel.setAttribute("initial-index", 0);
         carousel.append(curcar);
         carousel.append(item3);
-    }
-    else if (ind_lot_index>0 && ind_lot_index<current_array.length){
+    } else if (ind_lot_index > 0 && ind_lot_index < current_array.length) {
         carousel.append(item1);
         carousel.append(curcar);
         carousel.append(item3);
-    }
-    else if(ind_lot_index==current_array.length)
+    } else if (ind_lot_index == current_array.length)
     {
         carousel.append(item1);
-        carousel.append(curcar);    
+        carousel.append(curcar);
     }
-        
-    
-    
+
     var scr = document.createElement("script");
-    scr.innerHTML = '$("ons-carousel.maincarousel").on("postchange", function(){carousel_change(event);});';
+    scr.innerHTML =             
+            `$("ons-carousel.maincarousel").on("postchange", function(){
+                carousel_change(event);
+            });`;
     carousel.append(scr);
-    
+
     return carousel;
 }
 
@@ -129,7 +128,7 @@ function getcurcardetails()
 {
     var et = event.target;
     var curcardetails = $(et).parent().parent().parent().parent();
-    ind_lot_lotno = curcardetails.find(".lotno")[0].getAttribute("stupidlot").trim();    
+    ind_lot_lotno = curcardetails.find(".lotno")[0].getAttribute("stupidlot").trim();
     ind_lot_index = current_array.indexOf(ind_lot_lotno);
     fn.load('details_page.html', {data: {title: 'Detail Page'}});
     //console.log(et, ind_lot_index, curcardetails);    
@@ -225,7 +224,7 @@ var populate_data = function ()
     bid_price.innerHTML = this.data[0].bid_price != "" ? this.data[0].bid_price : "?";
     indpagecol22.appendChild(bid_price);
     var remarks = document.createElement("h4");
-    remarks.id="remarks";
+    remarks.id = "remarks";
     remarks.innerHTML = this.data[0].remarks;
     indpagecol22.appendChild(remarks);
 
@@ -249,8 +248,8 @@ var populate_data = function ()
     var ind_remarkcol = document.createElement("ons-col");
     var ind_input = document.createElement("div");
     ind_input.id = "indinput";
-    ind_input.setAttribute("class", "buyer_remark");    
-    ind_input.setAttribute("onmousedown","show_remark_modal()");
+    ind_input.setAttribute("class", "buyer_remark");
+    ind_input.setAttribute("onmousedown", "show_remark_modal()");
     ind_input.attachMessageData = attach_message_data;
     ind_input.getByLotid = get_by_lotid;
     ind_input.idbAddLot = idb_add_lot;
@@ -277,22 +276,20 @@ var populate_data = function ()
     //logging
     console.log(curcar);
     $(".buyer_remark")[0].getByLotid();
-    
-    if(ons.orientation.isLandscape())
+
+    if (ons.orientation.isLandscape())
     {
-        $("ons-row").css({"float":"left", "width":"49%"});
+        $("ons-row").css({"float": "left", "width": "49%"});
+    } else {
+        $("ons-row").css({"float": "none", "width": "100%"});
     }
-    else {
-        $("ons-row").css({"float":"none", "width":"100%"});
-    }
-    ons.orientation.on('change', function() {
-        if(ons.orientation.isLandscape())
-    {
-        $("ons-row").css({"float":"left", "width":"49%"});
-    }
-    else {
-        $("ons-row").css({"float":"none", "width":"100%"});
-    }
+    ons.orientation.on('change', function () {
+        if (ons.orientation.isLandscape())
+        {
+            $("ons-row").css({"float": "left", "width": "49%"});
+        } else {
+            $("ons-row").css({"float": "none", "width": "100%"});
+        }
     });
 }
 function get_auction_names() {
@@ -504,7 +501,7 @@ function get_shortName(c)
         c = c.split(" ");
         for (var i = 0; i < c.length; i++)
         {
-            c[i] = c[i].length>3 ? c[i].substr(0, 3) : c[i];
+            c[i] = c[i].length > 3 ? c[i].substr(0, 3) : c[i];
         }
         c = c.join("-");
     }
@@ -782,7 +779,7 @@ function shareIt(ect3p)
     try {
         window.plugins.socialsharing.shareViaWhatsApp(company_name + ", lotno: " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", model: " + ect3p.getElementsByClassName("carname")[0].innerText, null /* img */, null /* url */, function ()
         {
-            console.log('share ok')
+            console.log('share ok');
         });
     } catch (e)
     {
@@ -791,8 +788,7 @@ function shareIt(ect3p)
             try {
                 navigator.share({
                     title: 'Check lot',
-                    text: company_name + ", lot: " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", auction sheet: "  + big_data.myIndexOf(ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot"))[0].auction_sheet + ", front: " + ect3p.getElementsByTagName("img")[0].src,
-                    
+                    text: company_name + ", lot: " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", auction sheet: " + big_data.myIndexOf(ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot"))[0].auction_sheet + ", front: " + ect3p.getElementsByTagName("img")[0].src,
                 })
                         .then(() => console.log('Successful share'))
                         .catch((error) => console.log('Error sharing', error));
@@ -960,7 +956,7 @@ document.addEventListener('show', function (event) {
         case "details_page":
             //load data from auction_data_module
             $("#carousel").html(generate_carousel_content());//manage carousel initiation in a better way
-            
+
             curcar.populate_data = populate_data;
             curcar.populate_data();
             break;
@@ -1044,19 +1040,18 @@ function carousel_change(event)
     {
         console.log(event.activeIndex);
         //temporary setup    
-            //curcar = $("ons-carousel ons-carousel-item")[event.activeIndex].outerHTML;            
-            
-            if(event.activeIndex==0)
-            {
-                ind_lot_index--;
-                ind_lot_lotno = current_array[ind_lot_index];                
-            }
-            else {
-                ind_lot_index++;
-                ind_lot_lotno = current_array[ind_lot_index];
-            }
-            $("#carousel").html(generate_carousel_content()); 
-            curcar.populate_data();
+        //curcar = $("ons-carousel ons-carousel-item")[event.activeIndex].outerHTML;            
+
+        if (event.activeIndex == 0)
+        {
+            ind_lot_index--;
+            ind_lot_lotno = current_array[ind_lot_index];
+        } else {
+            ind_lot_index++;
+            ind_lot_lotno = current_array[ind_lot_index];
+        }
+        $("#carousel").html(generate_carousel_content());
+        curcar.populate_data();
 
     } else {
         //the other one
@@ -1084,7 +1079,7 @@ function show_range()
         get_by_auction();
         console.log("creating the list");
     } else {
-     
+
         row_count = Number(document.querySelector("#auction_names")[document.querySelector("#auction_names").selectedIndex].getAttribute("count"));
         select_auction();
     }
