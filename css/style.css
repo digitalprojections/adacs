@@ -125,6 +125,7 @@ div.buyer_remarks {
     font-size: small;    
     min-width: 20px;
     min-height: 10px;
+    max-height: 40px;
     word-wrap: break-word;    
     cursor: text;    
     background-color: darkseagreen;
