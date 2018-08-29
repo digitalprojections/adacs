@@ -229,7 +229,8 @@ function show_final_result() {
         this.saveStatus = save_status;
         this.getByLotid(); //also get the status?
     });
-    startPage = get_startPage();
+    setTimeout(function (){
+        startPage = get_startPage();
     if (startPage < Number(pager))
     {
         $("#previous_button").hide();
@@ -247,6 +248,8 @@ function show_final_result() {
     //startPage/Number(pager)+1 //get the current page
 
     $("#heading2").text(get_shortName(company_name) + ": " + String($("#main_table ons-list-item.top_bid").length) + ", " + (startPage/Number(pager)+1) + "/" + Math.ceil(current_array.length/pager));
+    },3000);
+    
 }
 function update_entry()
 {
