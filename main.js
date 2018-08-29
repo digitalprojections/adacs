@@ -259,6 +259,11 @@ var populate_data = function ()
     console.log(this.data[0], this.data);
 
     $(".buyer_remark")[0].getByLotid();
+    
+    if(ons.orientation.isLandscape())
+    {
+        $("ons-row").css({"float":"left", "width":"49%"});
+    }
 }
 function get_auction_names() {
     current_array = [];
