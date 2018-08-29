@@ -744,7 +744,7 @@ function lot_kanri(event) {
 function shareIt(ect3p)
 {
     try {
-        window.plugins.socialsharing.shareViaWhatsApp(company_name + ", " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", " + ect3p.getElementsByClassName("carname")[0].innerText, null /* img */, null /* url */, function ()
+        window.plugins.socialsharing.shareViaWhatsApp(company_name + ", lotno: " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", model: " + ect3p.getElementsByClassName("carname")[0].innerText, null /* img */, null /* url */, function ()
         {
             console.log('share ok')
         });
@@ -755,7 +755,7 @@ function shareIt(ect3p)
             try {
                 navigator.share({
                     title: 'Check lot',
-                    text: company_name + " " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + " "  + big_data.myIndexOf(ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot"))[0].auction_sheet + ", " + ect3p.getElementsByTagName("img")[0].src,
+                    text: company_name + ", lot: " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", auction sheet: "  + big_data.myIndexOf(ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot"))[0].auction_sheet + ", front: " + ect3p.getElementsByTagName("img")[0].src,
                     
                 })
                         .then(() => console.log('Successful share'))
@@ -763,7 +763,7 @@ function shareIt(ect3p)
             } catch (e) {
                 navigator.share({
                     title: $("#indinput").text(),
-                    text: company_name + " lot:" + $("#exlot")[0].innerText + " bid:" + $("#bidprice")[0].innerText + " " + " auction sheet:" + $("img")[0].src + " front image:" + $("img")[1].src,
+                    text: company_name + ", lot: " + $("#exlot")[0].innerText + ", bid: " + $("#bidprice")[0].innerText + ", buyer: " + $("#buyer_remark").innerText + ", auction sheet:" + $("img")[0].src + " front image:" + $("img")[1].src,
                 })
                         .then(() => console.log('Successful share'))
                         .catch((error) => console.log('Error sharing', error));
