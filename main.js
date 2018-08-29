@@ -189,10 +189,12 @@ var populate_data = function ()
     //info section wrappers END
 
     //aucname lot
-    var company_name = document.createElement("h2");
-    company_name.innerHTML = this.data[0].company_name;
-    indpagecol21.appendChild(company_name);
+    var company_name1 = document.createElement("h2");
+    company_name1.id = "aucname";
+    company_name1.innerHTML = this.data[0].company_name;
+    indpagecol21.appendChild(company_name1);
     var exlot_no = document.createElement("h3");
+    exlot_no.id = "exlot";
     exlot_no.innerHTML = this.data[0].exlot_no;
     indpagecol21.appendChild(exlot_no);
     //aucname lot END
@@ -200,9 +202,11 @@ var populate_data = function ()
 
     //bid price
     var bid_price = document.createElement("h2");
+    bid_price.id = "bidprice";
     bid_price.innerHTML = this.data[0].bid_price != "" ? this.data[0].bid_price : "?";
     indpagecol22.appendChild(bid_price);
     var remarks = document.createElement("h4");
+    remarks.id="remarks";
     remarks.innerHTML = this.data[0].remarks;
     indpagecol22.appendChild(remarks);
 
@@ -759,7 +763,7 @@ function shareIt(ect3p)
             } catch (e) {
                 navigator.share({
                     title: $("#indinput").text(),
-                    text: company_name + " lot:" + $("h3")[0].innerText + " bid:" + $("h2")[0].innerText + " " + " auction sheet:" + $("img")[0].src + " front image:" + $("img")[1].src,
+                    text: company_name + " lot:" + $("#exlot")[0].innerText + " bid:" + $("#bidprice")[0].innerText + " " + " auction sheet:" + $("img")[0].src + " front image:" + $("img")[1].src,
                 })
                         .then(() => console.log('Successful share'))
                         .catch((error) => console.log('Error sharing', error));
