@@ -763,7 +763,7 @@ function shareIt(ect3p)
             } catch (e) {
                 navigator.share({
                     title: $("#indinput").text(),
-                    text: company_name + ", lot: " + $("#exlot")[0].innerText + ", bid: " + $("#bidprice")[0].innerText + ", buyer: " + $("#buyer_remark").innerText + ", auction sheet:" + $("img")[0].src + " front image:" + $("img")[1].src,
+                    text: company_name + ", lot: " + $("#exlot")[0].innerText + ", bid: " + $("#bidprice")[0].innerText + ", buyer: " + $("#indinput").innerText + ", auction sheet:" + $("img")[0].src + " front image:" + $("img")[1].src,
                 })
                         .then(() => console.log('Successful share'))
                         .catch((error) => console.log('Error sharing', error));
