@@ -247,6 +247,15 @@ function show_final_result() {
     //startPage/Number(pager)+1 //get the current page
 
     $("#heading2").text(get_shortName(company_name) + ": " + String($("#main_table ons-list-item.top_bid").length) + ", " + (startPage/Number(pager)+1) + "/" + Math.ceil(current_array.length/pager));
+    var lis = $("#main_table ons-list-item");
+    for (var j=0;j<lis.length; j++)
+    {
+        if(Boolean(cancel_remark_found(list[i])))
+                    {
+                        console.log("OK");
+                        //lis[j].append(`<ons-row><ons-col><ons-icon icon='md-alert-triangle'></ons-icon></ons-col></ons-row>`);
+                    }
+    }
     
     console.log('Entries all displayed.');
 }
