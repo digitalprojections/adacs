@@ -65,7 +65,7 @@ var populate_data = function ()
 
     this.data = big_data.myIndexOf(ind_lot_lotno); //is an array of JSON objects
     var caritem = this;
-
+    
     caritem.classList.add(this.data[0].lotid);
     //img START
     var imgcarousel = document.createElement("ons-carousel");
