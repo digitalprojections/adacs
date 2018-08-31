@@ -162,7 +162,48 @@ body{
 .indimg{
     width: 100%;
 }
+@media screen and (orientation: portrait){
 .indimg_sheet{
     width: 100%;
-    height: 269px;
+    height: 50vh;
 }
+}
+@media screen and (orientation: landscape){
+.indimg_sheet{
+    width: 100%;
+    height: 85vh;
+}
+}
+@media (min-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */ }
+@media (min-width:481px)  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */ }
+@media (min-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ }
+@media (min-width:961px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */ }
+@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */ 
+.list-item__thumbnail {
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    display: block;
+    margin: 0;
+}
+span.bidprice {
+    font-size: xx-large;
+    font-weight: bold;
+    padding: 5px;
+}
+.lotno{
+    font-size: xx-large;
+    margin: 6px;
+    float: left;
+}
+.carname{
+    font-size: large;
+    margin: 6px;
+    float: left;
+}
+.indimg_sheet {
+    width: 50%;
+    height: 85vh;
+}
+}
+@media (min-width:1281px) { /* hi-res laptops and desktops */ }
