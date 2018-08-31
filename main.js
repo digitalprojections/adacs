@@ -13,6 +13,7 @@ var big_data = [];
 var page_data = [];
 var big_string = "";
 var sort_type;
+var listtype = "all";
 var session;
 var count_array = [];
 var unique_array = [];
@@ -600,15 +601,31 @@ function lot_kanri(event) {
 function shareIt(ect3p)
 {
     try {
+        //Android APP share code
         window.plugins.socialsharing.shareViaWhatsApp(company_name + ", lotno: " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", model: " + ect3p.getElementsByClassName("carname")[0].innerText, null /* img */, null /* url */, function ()
         {
             console.log('share ok');
         });
     } catch (e)
     {
-
+        //Web APP share code
         if (navigator.share) {
-            try {
+            if (document.querySelector("#main_table"))
+            {
+                //LIST VIEW
+                try {
+                navigator.share({
+                    title: 'Check lot',
+                    text: company_name + ", lot: " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", auction sheet: " + big_data.myIndexOf(ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot"))[0].auction_sheet + ", front: " + ect3p.getElementsByTagName("img")[0].src,
+
+                });
+            } catch (e) {
+                
+            }
+            }
+            else {
+                //DETAILS PAGE
+                try {
                 navigator.share({
                     title: 'Check lot',
                     text: company_name + ", lot: " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", auction sheet: " + big_data.myIndexOf(ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot"))[0].auction_sheet + ", front: " + ect3p.getElementsByTagName("img")[0].src,
@@ -620,6 +637,7 @@ function shareIt(ect3p)
                     text: company_name + ", lot: " + $("#exlot")[0].innerText + ", bid: " + $("#bidprice")[0].innerText + ", buyer: " + $("#indinput").text() + ", auction sheet:" + $("img")[0].src + " front image:" + $("img")[1].src,
                 });
             }
+            }            
         }
     }
 
@@ -1042,24 +1060,31 @@ window.fn.load = function (page) {
     switch (arguments[0])
     {
         case "all":
-            show_lists("all")
+            listtype = "all";
+            show_lists()
             break;
         case "done":
-            show_lists("done");
+            listtype = "done";
+            show_lists();
             break;
         case "ask":
-            show_lists("ask");
+            listtype = "ask";
+            show_lists();
             break;
         case "cancel":
-            show_lists("cancel");
+            listtype = "cancel";
+            show_lists();
             break;
         case "new":
-            show_lists("new");
+            listtype = "new";
+            show_lists();
             break;
         case "updated":
-            show_lists("updated");
+            listtype = "updated";
+            show_lists();
             break;
         case "refresh":
+            listtype = "new";
             get_auction_names();
             fn.load("auctions.html");
             //show_lists("refresh");
@@ -1079,12 +1104,12 @@ window.fn.load = function (page) {
 
 
 };
-function show_lists(listname)
+function show_lists()
 {
-
+    
     big_string = "";
     $("#main_table ons-list-item").addClass("hidden");
-    switch (listname)
+    switch (listtype)
     {
         case "all":
             $("#main_table ons-list-item.top_bid").removeClass("hidden");
