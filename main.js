@@ -392,12 +392,23 @@ function show_big_data(page_data) {
                 big_string += `<ons-list-item tappable class='top_bid ${page_data[i]["id"] } new_data_${checkTime(page_data[i]["created_at"]) } new_price_${ checkTime(page_data[i]["updated_at"]) }' onmousedown='toggle_children(event)'><div class='left'><ons-row><ons-col><img class='list-item__thumbnail' src='${ getOldURL(page_data[i]["front_image"]) }' onmousedown='getcurcardetails(event)' lotid='${page_data[i]["id"]}'></ons-col></ons-row>`;
                 if(page_data.length>1)
                 {
-                    big_string += `<ons-row><ons-col><ons-icon style="color: orange;" icon="md-folder"></ons-icon></ons-col></ons-row>`;
+                    big_string += `<ons-row><ons-col><ons-icon style='color: orange;' icon='md-folder'></ons-icon></ons-col></ons-row>`;                 
+                    if(Boolean(cancel_remark_found(page_data[i])))
+                    {
+                        console.log("OK");
+                        big_string += `<ons-row><ons-col><ons-icon icon='md-alert-triangle'></ons-icon></ons-col></ons-row>`;
+                    }
                 }
+                
 
             } else {
                 //<ion-icon name="arrow-round-up"></ion-icon>
                 big_string += `<ons-list-item tappable class='secondary hidden ${page_data[i]["id"] } losing new_data_${ checkTime(page_data[i]["created_at"]) } new_price_${ checkTime(page_data[i]["updated_at"]) }' onmousedown='toggle_children(event)'><div class='left'><ons-row><ons-col><ons-icon style="color: orange;" icon="md-long-arrow-up"></ons-icon></ons-col></ons-row>`;
+                if(Boolean(cancel_remark_found(page_data[i])))
+                    {
+                        console.log("OK");
+                        big_string += `<ons-row><ons-col><ons-icon icon='md-alert-triangle'></ons-icon></ons-col></ons-row>`;
+                    }
 
             }
             var bidprice = page_data[i]["bid_price"];
@@ -482,7 +493,18 @@ function show_big_data(page_data) {
 
 
 }
-
+function cancel_remark_found(bigdata)
+{
+    console.log(bigdata);
+    var bul;
+    
+        if (bigdata["remarks"].indexOf("x")>=0)
+        {
+            bul = true;
+        }
+    
+    return bul;
+}
 function get_current_onsrow_index(g, onsrows) {
     var res;
     for (var i = 0; i < onsrows.length; i++)
@@ -1106,7 +1128,7 @@ window.fn.load = function (page) {
 };
 function show_lists()
 {
-    
+    console.log(listtype);
     big_string = "";
     $("#main_table ons-list-item").addClass("hidden");
     switch (listtype)
