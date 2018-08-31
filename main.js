@@ -55,10 +55,7 @@ var speed_dial_content = `
     </ons-speed-dial-item>    
     <ons-speed-dial-item style="background-color: #24ff79;"  onclick="lot_kanri(event)" value="whatsapp">
       <ons-icon icon="md-whatsapp" ></ons-icon>
-    </ons-speed-dial-item>    
-    <ons-speed-dial-item style="background-color: ##24a7ff;"  onclick="lot_kanri(event)" value="group">
-      <ons-icon icon="md-layers" ></ons-icon>
-    </ons-speed-dial-item>    
+    </ons-speed-dial-item>        
   </ons-speed-dial>`;
 
 var speed_dial_ind = `
@@ -89,7 +86,7 @@ function getcurcardetails()
     ind_lot_lotno = curcardetails.find(".lotno")[0].getAttribute("stupidlot").trim();
     ind_lot_index = current_array.indexOf(ind_lot_lotno);
     fn.load('details_page.html', {data: {title: 'Detail Page'}});
-    //console.log(et, ind_lot_index, curcardetails);    
+    console.log(et, curcardetails);
 }
 
 var myIndex = function (x)
@@ -318,7 +315,7 @@ function get_shortName(c)
         c = c.split(" ");
         for (var i = 0; i < c.length; i++)
         {
-            c[i] = c[i].length>3 ? c[i].substr(0, 3) : c[i];
+            c[i] = c[i].length > 3 ? c[i].substr(0, 3) : c[i];
         }
         c = c.join("-");
     }
@@ -380,25 +377,25 @@ function show_big_data(page_data) {
 
     page_data.sort(function (a, b) {
         return Number(a.lot_no.substr(a.lot_no.indexOf("//") + 2)) - Number(b.lot_no.substr(b.lot_no.indexOf("//") + 2)) || getRealNumber(Number(b.bid_price)) - getRealNumber(Number(a.bid_price));
-    });
+    });    
     for (i in page_data) {
         var lotno = page_data[i]["exlot_no"];
-        //console.log(page_data[i]["exlot_no"], 'page_data[i]["exlot_no"]');
+        
         if (Number(lotno) >= Number(startIndex) && Number(lotno) <= Number(endIndex))
         {
-
-
+            
             if (i == 0)
             {
                 //lazy image
                 big_string += `<ons-list-item tappable class='top_bid ${page_data[i]["id"] } new_data_${checkTime(page_data[i]["created_at"]) } new_price_${ checkTime(page_data[i]["updated_at"]) }' onmousedown='toggle_children(event)'><div class='left'><ons-row><ons-col><img class='list-item__thumbnail' src='${ getOldURL(page_data[i]["front_image"]) }' onmousedown='getcurcardetails(event)'></ons-col></ons-row>`;
-                //hiding images temporarily
-                //big_string += "<tr class='top_bid new_data_" + checkTime(page_data[i]["created_at"]) + " new_price_" + checkTime(page_data[i]["updated_at"]) + "' onmousedown='toggle_children(event)'><td>";
-                //unique_array.push(page_data[i]["lot_no"]);
+                if(page_data.length>1)
+                {
+                    big_string += `<ons-row><ons-col><ion-icon size="small" name="albums"></ion-icon></ons-col></ons-row>`;
+                }
 
             } else {
-
-                big_string += `<ons-list-item tappable class='hidden ${page_data[i]["id"] } losing new_data_${ checkTime(page_data[i]["created_at"]) } new_price_${ checkTime(page_data[i]["updated_at"]) }'><ons-row><ons-col><span class='aucname'>${ page_data[i]["company_name"] }</span></ons-col></ons-row>`;
+                //<ion-icon name="arrow-round-up"></ion-icon>
+                big_string += `<ons-list-item tappable class='hidden ${page_data[i]["id"] } losing new_data_${ checkTime(page_data[i]["created_at"]) } new_price_${ checkTime(page_data[i]["updated_at"]) }' onmousedown='toggle_children(event)'><div class='left'><ons-row><ons-col><ion-icon size="large" name="arrow-round-up"></ion-icon></ons-col></ons-row>`;
 
             }
             var bidprice = page_data[i]["bid_price"];
@@ -467,11 +464,12 @@ function show_big_data(page_data) {
             </span></ons-col></ons-row><ons-row><ons-col></div></ons-list-item>`;
         }
     }
-
-    rows = $(".lotno");
+    
     if (Boolean(check_kaishusu(page_data)))
     {
-        //console.log("old data found");
+        //a potential for future use. Old data creep in issue can be caught here
+        console.log("old data found");
+        ons.notification.alert("Old data in the list!");
     }
 
     if (!Boolean(big_string))
@@ -483,33 +481,45 @@ function show_big_data(page_data) {
 
 }
 
+function get_current_onsrow_index(g, onsrows) {
+    var res;
+    for (var i = 0; i < onsrows.length; i++)
+    {
+        if (onsrows[i] == g)
+        {
+            res = i;
+        }
+    }
+    return res;
+}
 
 function toggle_children(event)
 {
+    var onsrows = document.querySelectorAll("#main_table ons-list-item");
 
-    //console.log(event.currentTarget);
     event.currentTarget.querySelector('ons-speed-dial').toggleItems();
 
-    var item = $(event.target).parent().find(".lotno")[0];
-    var s = $(event.target).parent().index();
-    ////console.log(event.target, s);
-    //
+    var item = event.currentTarget.querySelector(".lotno");
+
+    var targetIndex = get_current_onsrow_index(event.currentTarget, onsrows);
+
+    //var s = $(event.target).parent().index();
+    console.log(event.currentTarget, item);
+
     //var sub_ar = [item];
 
-    for (var i = s + 1; i < rows.length; i++)
+    for (var i = targetIndex+1; i < onsrows.length; i++)
     {
-////console.log(rows[i]);
         try {
-            if (item.getAttribute("stupidlot") == rows[i].getAttribute("stupidlot") && rows[i].getAttribute("lotid") != item.getAttribute("lotid"))
+            if (item.getAttribute("stupidlot") == onsrows[i].querySelector(".lotno").getAttribute("stupidlot"))
             {
-//sub_ar.push(rows[i]);
-//$(item).parent().parent().removeClass("top_bid");
-                if ($(rows[i]).parent().parent().hasClass("hidden")) {
-                    $(rows[i]).parent().parent().removeClass("hidden");
+                //toggle
+                if ($(onsrows[i]).hasClass("hidden")) {
+                    $(onsrows[i]).removeClass("hidden");
                 } else {
-                    $(rows[i]).parent().parent().addClass("hidden");
+                    $(onsrows[i]).addClass("hidden");
                 }
-                console.log("looping ", i);
+                console.log("looping ", onsrows[i]);
             } else {
 //check the next row as item                        
                 console.log("loop end");
@@ -600,8 +610,8 @@ function shareIt(ect3p)
             try {
                 navigator.share({
                     title: 'Check lot',
-                    text: company_name + ", lot: " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", auction sheet: "  + big_data.myIndexOf(ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot"))[0].auction_sheet + ", front: " + ect3p.getElementsByTagName("img")[0].src,
-                    
+                    text: company_name + ", lot: " + ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot") + ", auction sheet: " + big_data.myIndexOf(ect3p.getElementsByClassName("lotno")[0].getAttribute("stupidlot"))[0].auction_sheet + ", front: " + ect3p.getElementsByTagName("img")[0].src,
+
                 });
             } catch (e) {
                 navigator.share({
