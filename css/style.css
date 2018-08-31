@@ -201,9 +201,5 @@ span.bidprice {
     margin: 6px;
     float: left;
 }
-.indimg_sheet {
-    width: 50%;
-    height: 85vh;
-}
 }
 @media (min-width:1281px) { /* hi-res laptops and desktops */ }

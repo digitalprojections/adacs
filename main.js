@@ -19,7 +19,7 @@ var unique_array = [];
 var current_array = [];
 var new_entries = [];
 var updated_entries = [];
-var ind_lot_active;
+var ind_lot_lotid;
 var ind_lot_index;
 var ind_lot_lotno;
 var ind_lot_stack = []; //for raw data
@@ -82,6 +82,7 @@ var speed_dial_ind = `
 function getcurcardetails()
 {
     var et = event.target;
+    ind_lot_lotid = et.getAttribute("lotid");
     var curcardetails = $(et).parent().parent().parent().parent();
     ind_lot_lotno = curcardetails.find(".lotno")[0].getAttribute("stupidlot").trim();
     ind_lot_index = current_array.indexOf(ind_lot_lotno);
@@ -387,15 +388,15 @@ function show_big_data(page_data) {
             if (i == 0)
             {
                 //lazy image
-                big_string += `<ons-list-item tappable class='top_bid ${page_data[i]["id"] } new_data_${checkTime(page_data[i]["created_at"]) } new_price_${ checkTime(page_data[i]["updated_at"]) }' onmousedown='toggle_children(event)'><div class='left'><ons-row><ons-col><img class='list-item__thumbnail' src='${ getOldURL(page_data[i]["front_image"]) }' onmousedown='getcurcardetails(event)'></ons-col></ons-row>`;
+                big_string += `<ons-list-item tappable class='top_bid ${page_data[i]["id"] } new_data_${checkTime(page_data[i]["created_at"]) } new_price_${ checkTime(page_data[i]["updated_at"]) }' onmousedown='toggle_children(event)'><div class='left'><ons-row><ons-col><img class='list-item__thumbnail' src='${ getOldURL(page_data[i]["front_image"]) }' onmousedown='getcurcardetails(event)' lotid='${page_data[i]["id"]}'></ons-col></ons-row>`;
                 if(page_data.length>1)
                 {
-                    big_string += `<ons-row><ons-col><ion-icon size="small" name="albums"></ion-icon></ons-col></ons-row>`;
+                    big_string += `<ons-row><ons-col><ons-icon style="color: orange;" icon="md-folder"></ons-icon></ons-col></ons-row>`;
                 }
 
             } else {
                 //<ion-icon name="arrow-round-up"></ion-icon>
-                big_string += `<ons-list-item tappable class='hidden ${page_data[i]["id"] } losing new_data_${ checkTime(page_data[i]["created_at"]) } new_price_${ checkTime(page_data[i]["updated_at"]) }' onmousedown='toggle_children(event)'><div class='left'><ons-row><ons-col><ion-icon size="large" name="arrow-round-up"></ion-icon></ons-col></ons-row>`;
+                big_string += `<ons-list-item tappable class='hidden ${page_data[i]["id"] } losing new_data_${ checkTime(page_data[i]["created_at"]) } new_price_${ checkTime(page_data[i]["updated_at"]) }' onmousedown='toggle_children(event)'><div class='left'><ons-row><ons-col><ons-icon style="color: orange;" icon="md-long-arrow-up"></ons-icon></ons-col></ons-row>`;
 
             }
             var bidprice = page_data[i]["bid_price"];
@@ -504,7 +505,7 @@ function toggle_children(event)
     var targetIndex = get_current_onsrow_index(event.currentTarget, onsrows);
 
     //var s = $(event.target).parent().index();
-    console.log(event.currentTarget, item);
+    //console.log(event.currentTarget, item);
 
     //var sub_ar = [item];
 
