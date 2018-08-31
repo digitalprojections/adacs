@@ -19,6 +19,7 @@ function generate_carousel_content()
     carousel.setAttribute("initial-index", 1);
     carousel.setAttribute("style", "height: 100%; width: 100%");
     carousel.setAttribute("swipeable", "true");
+    carousel.setAttribute("direction","vertical");
     carousel.setAttribute("overscrollable", "true");
     carousel.setAttribute("auto-scroll", "true");
     carousel.setAttribute("auto-refresh", "true");
