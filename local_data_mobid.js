@@ -217,7 +217,7 @@ function firstRun(currentversion) {
     //migrateMemory();
 }
 
-function get_by_status(status) {
+function get_by_status() {
 
     current_array = [];
 
@@ -235,7 +235,7 @@ function get_by_status(status) {
         for (var i = 0; i < event.target.result.length; i++)
         {
             console.log(event.target.result[i]["created_at"], d);
-            if (event.target.result[i]["created_at"] > d && event.target.result[i]["status"] == status) {
+            if (event.target.result[i]["created_at"] > d && event.target.result[i][listtype] == status) {
                 console.log(event.target.result[i]["lotid"]);
                 current_array.push(event.target.result[i]["lotid"]);
             }

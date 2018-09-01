@@ -108,15 +108,15 @@ span.remarks {
     /*display: grid;*/
 }
 
-.Done{
+.done{
     background-color: #cdfdcd;
     
 }
-.ASK{
+.ask{
     background-color: #ffd280;
     
 }
-.Cancel{
+.cancel{
     background-color: #ffd4db;
     
 }
@@ -128,10 +128,10 @@ div.buyer_remarks {
     max-height: 40px;
     word-wrap: break-word;    
     cursor: text;    
-    background-color: darkseagreen;
+    background-color: aliceblue;
     border-radius: 10px;
-    padding: 2px!important;
-    color: aliceblue;
+    padding: 2px!important;    
+    color: blue;
     text-align: center;
 }
 .left.list-item__left {
@@ -141,9 +141,11 @@ div.buyer_remarks {
 
 div#indinput{
     min-height: 20px;
-    background-color: darkseagreen;
+    background-color: aliceblue;
     border-radius: 3px;
-    color: white;
+    padding: 5px;
+    margin-top: 5px;
+    color: blue;
 }
 
 ons-list-item.new_data_undefined {

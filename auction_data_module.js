@@ -93,9 +93,9 @@ function manage_object_stores(bdbName, storeName, rd) {
     }
 }
 
-function get_by_auction() {          
+function get_by_auction() {
     hyphen_today = today.split("/").reverse().join("-");
-    
+
     storeName = company_name + hyphen_today;
 
     console.log("get_by_auct", company_name, hyphen_today);
@@ -121,18 +121,18 @@ function get_by_auction() {
             if (cursor == row_count) {
                 request = index.openCursor();
                 request.onsuccess = function (event) {
-                    var cursor = event.target.result;                    
-                    if (cursor) {                        
-                        
-                            big_data.push(cursor.value);
-                            cursor.continue();
-                        
-                        
+                    var cursor = event.target.result;
+                    if (cursor) {
+
+                        big_data.push(cursor.value);
+                        cursor.continue();
+
+
                     } else {
-                            big_data.myIndexOf = myIndex;
-                            create_unique_list();
-                            fn.load("main.html");
-                        
+                        big_data.myIndexOf = myIndex;
+                        create_unique_list();
+                        fn.load("main.html");
+
                     }
                 }
             } else {
@@ -176,10 +176,9 @@ function show_selected_chunk(i, endPos, indexName)
     var page_data = [];
     var index = store.index(indexName);
 
-try{
-    request = index.openCursor(IDBKeyRange.only(current_array[i]));
-}
-    catch (e)
+    try {
+        request = index.openCursor(IDBKeyRange.only(current_array[i]));
+    } catch (e)
     {
         request = index.openCursor(IDBKeyRange.only(current_array[i]));
     }
@@ -195,16 +194,16 @@ try{
                 ons.notification.alert("No data within the range");
             }
             cursor.continue();
-        } else {           
-                show_big_data(page_data);
-                page_data = [];
-            if (i < endPos-1 && i < current_array.length - 1)
+        } else {
+            show_big_data(page_data);
+            page_data = [];
+            if (i < endPos - 1 && i < current_array.length - 1)
             {
                 i++;
-               //console.log("loading ", i, startPage);
+                //console.log("loading ", i, startPage);
                 show_selected_chunk(i, endPos, indexName);
             } else {
-                console.log("i:", i, "startPage:", startPage, "endPos:", endPos, "current_array.length:",  current_array.length);
+                console.log("i:", i, "startPage:", startPage, "endPos:", endPos, "current_array.length:", current_array.length);
                 show_final_result();
             }
             //            
@@ -229,7 +228,7 @@ function show_final_result() {
         this.saveStatus = save_status;
         this.getByLotid(); //also get the status?
     });
-        startPage = get_startPage();
+    startPage = get_startPage();
     if (startPage < Number(pager))
     {
         $("#previous_button").hide();
@@ -246,17 +245,25 @@ function show_final_result() {
 
     //startPage/Number(pager)+1 //get the current page
 
-    $("#heading2").text(get_shortName(company_name) + ": " + String($("#main_table ons-list-item.top_bid").length) + ", " + (startPage/Number(pager)+1) + "/" + Math.ceil(current_array.length/pager));
+    $("#heading2").text(get_shortName(company_name) + ": " + String($("#main_table ons-list-item.top_bid").length) + ", " + (startPage / Number(pager) + 1) + "/" + Math.ceil(current_array.length / pager));
     var lis = $("#main_table ons-list-item");
-    for (var j=0;j<lis.length; j++)
+    for (var j = 0; j < lis.length; j++)
     {
-        if(Boolean(cancel_remark_found(list[i])))
-                    {
-                        console.log("OK");
-                        //lis[j].append(`<ons-row><ons-col><ons-icon icon='md-alert-triangle'></ons-icon></ons-col></ons-row>`);
-                    }
+        if (Boolean(cancel_remark_found(lis[j])))
+        {
+            if (lis[j].classList.contains("top_bid"))
+            {
+                var ttop = lis[j];
+                console.log("OK");
+                var or = document.createElement("ons-row");
+                or.innerHTML = `<ons-col><ons-icon class="alertprice" style='color:red;' icon='md-alert-triangle'></ons-icon></ons-col>`;
+                lis[j].querySelector(".rightside-lm").appendChild(or);
+            } else {
+                ttop.querySelector(".rightside-lm").appendChild(or);
+            }
+        }
     }
-    
+
     console.log('Entries all displayed.');
 }
 function update_entry()

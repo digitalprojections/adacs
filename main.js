@@ -46,13 +46,13 @@ var speed_dial_content = `
       <ons-icon icon="md-flag"></ons-icon>
     </ons-fab>    
     <ons-speed-dial-item style="background-color: #cdfdcd;">
-      <ons-icon icon="md-check" value="Done" onclick="lot_kanri(event)"></ons-icon>
+      <ons-icon icon="md-check" value="done" onclick="lot_kanri(event)"></ons-icon>
     </ons-speed-dial-item>
     <ons-speed-dial-item style="background-color: #ffd280;">
-      <ons-icon icon="md-help" value="ASK" onclick="lot_kanri(event)"></ons-icon>
+      <ons-icon icon="md-help" value="ask" onclick="lot_kanri(event)"></ons-icon>
     </ons-speed-dial-item>
     <ons-speed-dial-item style="background-color: #ffd4db;">
-      <ons-icon icon="md-close-circle" value="Cancel" onclick="lot_kanri(event)"></ons-icon>
+      <ons-icon icon="md-close-circle" value="cancel" onclick="lot_kanri(event)"></ons-icon>
     </ons-speed-dial-item>    
     <ons-speed-dial-item style="background-color: #24ff79;"  onclick="lot_kanri(event)" value="whatsapp">
       <ons-icon icon="md-whatsapp" ></ons-icon>
@@ -487,10 +487,10 @@ function show_big_data(page_data) {
 }
 function cancel_remark_found(bigdata)
 {
-    //console.log(bigdata);
+    console.log(bigdata);
     var bul;
    
-        if (bigdata["remarks"].indexOf("x")>=0 || bigdata["bid_price"].indexOf("x")>=0)
+        if (bigdata.querySelector(".remarks").innerText.indexOf("x")>=0 || bigdata.querySelector(".bidprice").innerText.indexOf("x")>=0)
         {
             bul = true;
         }
@@ -570,21 +570,21 @@ function lot_kanri(event) {
     console.log(status);
     switch (status)
     {
-        case "Done":
-            etppp.classList.remove("ASK");
-            etppp.classList.remove("Cancel");
-            if (etppp.classList.contains("Done"))
+        case "done":
+            etppp.classList.remove("ask");
+            etppp.classList.remove("cancel");
+            if (etppp.classList.contains("done"))
             {
-                etppp.classList.remove("Done");
+                etppp.classList.remove("done");
                 status = "";
             } else {
-                etppp.classList.add("Done");
+                etppp.classList.add("done");
             }
             break;
-        case "ASK":
-            etppp.classList.remove("Done");
-            etppp.classList.remove("Cancel");
-            if (etppp.classList.contains("ASK"))
+        case "ask":
+            etppp.classList.remove("done");
+            etppp.classList.remove("cancel");
+            if (etppp.classList.contains("ask"))
             {
                 etppp.classList.remove("ASK");
                 status = "";
@@ -592,15 +592,15 @@ function lot_kanri(event) {
                 etppp.classList.add("ASK");
             }
             break;
-        case "Cancel":
-            etppp.classList.remove("ASK");
-            etppp.classList.remove("Done");
-            if (etppp.classList.contains("Cancel"))
+        case "cancel":
+            etppp.classList.remove("ask");
+            etppp.classList.remove("done");
+            if (etppp.classList.contains("cancel"))
             {
-                etppp.classList.remove("Cancel");
+                etppp.classList.remove("cancel");
                 status = "";
             } else {
-                etppp.classList.add("Cancel");
+                etppp.classList.add("cancel");
             }
             break;
         case "whatsapp":
@@ -786,10 +786,10 @@ document.addEventListener('show', function (event) {
             $("#changeuser_but").show();
             $("#new_but").show();
             //$("#refresh_but").show();            
-            $("ons-list-item.Done").show();
-            $("ons-list-item.ASK").show();
-            $("ons-list-item.Cancel").show();
-            $("ons-list-item.New").show();
+            $("ons-list-item.done").show();
+            $("ons-list-item.ask").show();
+            $("ons-list-item.cancel").show();
+            $("ons-list-item.new").show();
             show_final_result();
             break;
         case "auctions":
@@ -808,10 +808,10 @@ document.addEventListener('show', function (event) {
             $("#auction_but").hide();
             $("#new_but").hide();
             //$("#refresh_but").hide();
-            $("ons-list-item.Done").hide();
-            $("ons-list-item.ASK").hide();
-            $("ons-list-item.Cancel").hide();
-            $("ons-list-item.New").hide();
+            $("ons-list-item.done").hide();
+            $("ons-list-item.ask").hide();
+            $("ons-list-item.cancel").hide();
+            $("ons-list-item.new").hide();
             break;
         case "settings":
             $("#changeuser_but").show();
@@ -819,20 +819,20 @@ document.addEventListener('show', function (event) {
             $("#settings_but").hide();
             $("#new_but").hide();
             //$("#refresh_but").hide();
-            $("ons-list-item.Done").hide();
-            $("ons-list-item.ASK").hide();
-            $("ons-list-item.Cancel").hide();
-            $("ons-list-item.New").hide();
+            $("ons-list-item.done").hide();
+            $("ons-list-item.ask").hide();
+            $("ons-list-item.cancel").hide();
+            $("ons-list-item.new").hide();
             break;
         default:
             $("#auction_but").hide();
             $("#changeuser_but").hide();
             $("#new_but").hide();
             //$("#refresh_but").hide();
-            $("ons-list-item.Done").hide();
-            $("ons-list-item.ASK").hide();
-            $("ons-list-item.Cancel").hide();
-            $("ons-list-item.New").hide();
+            $("ons-list-item.done").hide();
+            $("ons-list-item.ask").hide();
+            $("ons-list-item.cancel").hide();
+            $("ons-list-item.new").hide();
             break;
     }
 
@@ -1134,23 +1134,23 @@ function show_lists()
             show_selected_chunk(startPage, startPage + Number(pager), indexName);
             break;
         case "done":
-            $("#main_table ons-list-item.Done").removeClass("hidden");
-            $("#heading2").text(company_name + ": " + $("#main_table tr.Done").length);
+            $("#main_table ons-list-item.done").removeClass("hidden");
+            $("#heading2").text(company_name + ": " + $("#main_table tr.done").length);
             indexName = "lotid";
-            get_by_status("Done"); //local_data_mobid
+            get_by_status(); //local_data_mobid
 
             break;
         case "ask":
-            $("#main_table ons-list-item.ASK").removeClass("hidden");
-            $("#heading2").text(company_name + ": " + $("#main_table tr.ASK").length);
+            $("#main_table ons-list-item.ask").removeClass("hidden");
+            $("#heading2").text(company_name + ": " + $("#main_table tr.ask").length);
             indexName = "lotid";
-            get_by_status("ASK");
+            get_by_status();
             break;
         case "cancel":
-            $("#main_table ons-list-item.Cancel").removeClass("hidden");
-            $("#heading2").text(company_name + ": " + $("#main_table tr.Cancel").length);
+            $("#main_table ons-list-item.cancel").removeClass("hidden");
+            $("#heading2").text(company_name + ": " + $("#main_table tr.cancel").length);
             indexName = "lotid";
-            get_by_status("Cancel");
+            get_by_status();
             break;
         case "new":
             $("#main_table ons-list-item.top_bid.new_data_undefined").removeClass("hidden");
