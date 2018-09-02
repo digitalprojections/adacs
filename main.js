@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var database_url = "https://www.jjinventorysystem.com/test/ajphp_v41.php"; //JJpurchase
+var database_url = "https://ajpage.janjapanweb.com/ajphp_v41.php"; //JJpurchase
 var username = Boolean(localStorage.username) ? localStorage.username : "";
 var password = Boolean(localStorage.password) ? localStorage.password : "";
 var pager = !Boolean(localStorage.getItem("pager")) ? 10 : localStorage.getItem("pager");
