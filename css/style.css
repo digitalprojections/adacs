@@ -10,6 +10,11 @@ ons-col{
     padding-left: 2%;
     padding-right:2%;
 }
+#main_table ons-col{
+    max-width: 25vw;
+    padding-left: 2%;
+    padding-right:2%;
+}
 h3{
     color:red;
 }
