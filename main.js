@@ -487,7 +487,7 @@ function show_big_data(page_data) {
 }
 function cancel_remark_found(bigdata)
 {
-    console.log(bigdata);
+    //console.log(bigdata);
     var bul;
    
         if (bigdata.querySelector(".remarks").innerText.indexOf("x")>=0 || bigdata.querySelector(".bidprice").innerText.indexOf("x")>=0)

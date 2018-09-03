@@ -249,19 +249,26 @@ function show_final_result() {
     var lis = $("#main_table ons-list-item");
     for (var j = 0; j < lis.length; j++)
     {
-        if (Boolean(cancel_remark_found(lis[j])))
+        if (lis[j].classList.contains("top_bid"))
         {
-            if (lis[j].classList.contains("top_bid"))
-            {
-                var ttop = lis[j];
+            var ttop = lis[j];
+            if (Boolean(cancel_remark_found(lis[j])))
+            {                
                 console.log("OK");
-                var or = document.createElement("ons-row");
-                or.innerHTML = `<ons-col><ons-icon class="alertprice" style='color:red;' icon='md-alert-triangle'></ons-icon></ons-col>`;
-                lis[j].querySelector(".rightside-lm").appendChild(or);
-            } else {
-                ttop.querySelector(".rightside-lm").appendChild(or);
-            }
+                var orow = document.createElement("ons-row");
+                orow.innerHTML = `<ons-col><ons-icon class="alertprice" style='color:red;' icon='md-alert-triangle'></ons-icon></ons-col>`;
+                ttop.querySelector(".rightside-lm").appendChild(orow);
+            } 
         }
+        else {
+            if (Boolean(cancel_remark_found(lis[j])))
+            {                
+                console.log("OK sublot");
+                var orow = document.createElement("ons-row");
+                orow.innerHTML = `<ons-col><ons-icon class="alertprice" style='color:red;' icon='md-alert-triangle'></ons-icon></ons-col>`;
+                ttop.querySelector(".rightside-lm").appendChild(orow);
+            } 
+            }
     }
 
     console.log('Entries all displayed.');
