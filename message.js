@@ -89,3 +89,13 @@ messaging.onTokenRefresh(function() {
   function updateUIForPushPermissionRequired() {
     
   }
+  function isTokenSentToServer() {
+    return window.localStorage.getItem('sentToServer') === '1';
+  }
+   messaging.onMessage(function(payload) {
+    console.log('Message received. ', payload);
+    // [START_EXCLUDE]
+    // Update the UI to include the received message.
+    //appendMessage(payload);
+    // [END_EXCLUDE]
+  });
