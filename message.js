@@ -83,11 +83,9 @@ messaging.onTokenRefresh(function() {
     window.localStorage.setItem('sentToServer', sent ? '1' : '0');
   }
   function updateUIForPushEnabled(currentToken) {
-    showHideDiv(tokenDivId, true);
-    showHideDiv(permissionDivId, false);
+    
     showToken(currentToken);
   }
   function updateUIForPushPermissionRequired() {
-    showHideDiv(tokenDivId, false);
-    showHideDiv(permissionDivId, true);
+    
   }
