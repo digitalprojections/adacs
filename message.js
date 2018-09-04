@@ -67,7 +67,7 @@ messaging.onTokenRefresh(function() {
     // Show token in console and UI.
     var tokenElement = document.querySelector('#token');
     //tokenElement.textContent = currentToken;
-    console.log(currentToken);
+    console.log(currentToken, "error?");
   }
   function sendTokenToServer(currentToken) {
     if (!isTokenSentToServer()) {
