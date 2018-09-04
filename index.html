@@ -6,6 +6,7 @@
         <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
         <script src="components/loader.js"></script>        
         <script src="main.js"></script>
+        
         <script src="detail_page.js"></script>
         <script src="auction_data_module.js"></script>
         <script src="local_data_mobid.js"></script>
@@ -16,7 +17,8 @@
         <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
         <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
         <link rel="stylesheet" href="css/style.css">
-
+        <link rel="manifest" href="manifest.json">
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>        
         <script>
             ons.ready(function () {
                 console.log("UI is ready");
@@ -26,7 +28,17 @@
         </script>
     </head>
     <body>
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>        
+        
+        <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase-app.js"></script>       
+        
+        <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase-messaging.js"></script>
+        
+<script>
+  
+
+
+</script>
     
     <ons-splitter>
         <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
@@ -396,6 +408,6 @@
         </div>
     </ons-modal> 
 
-
+<script src="message.js"></script>
 </body>
 </html>
