@@ -785,6 +785,7 @@ document.addEventListener('show', function (event) {
             $("#auction_but").show();
             $("#changeuser_but").show();
             $("#new_but").show();
+            $("#settings_but").show();
             //$("#refresh_but").show();            
             $("ons-list-item.done").show();
             $("ons-list-item.ask").show();
@@ -797,6 +798,7 @@ document.addEventListener('show', function (event) {
             //$("#refresh_but").show();            
             break;
         case "details_page":
+            $("#settings_but").show();
             //load data from auction_data_module
             $("#carousel").html(generate_carousel_content());//manage carousel initiation in a better way
 
@@ -807,11 +809,12 @@ document.addEventListener('show', function (event) {
             $("#changeuser_but").show();
             $("#auction_but").hide();
             $("#new_but").hide();
+            $("#settings_but").show();
             //$("#refresh_but").hide();
             $("ons-list-item.done").hide();
             $("ons-list-item.ask").hide();
             $("ons-list-item.cancel").hide();
-            $("ons-list-item.new").hide();
+            $("ons-list-item.new").hide();            
             break;
         case "settings":
             $("#changeuser_but").show();
