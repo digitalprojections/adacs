@@ -419,7 +419,7 @@ function show_big_data(page_data) {
                 if (Number(bidprice) >= 500)
                 {
                     //the price was crazy style
-                    bidprice = get_fixed_price(bidprice) + get_fixed_price(price_adjuster);
+                    bidprice = get_fixed_price(bidprice);
                     bidprice = bidprice * 10000;
                 } else {
                     if (Number(bidprice) !== 0)
