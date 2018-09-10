@@ -28,6 +28,7 @@ if (!window.indexedDB) {
 //////////////////MANAGE STORES//////////////////////////
 /////////////////////////////////////////////////////////
 
+
 function manage_object_stores(bdbName, storeName, rd) {
     var request = indexedDB.open(bdbName);
     request.onsuccess = function (e) {

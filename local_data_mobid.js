@@ -16,6 +16,7 @@ function initiateDate() {
     });
 }
 
+
 window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
 window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction || {
     READ_WRITE: "readwrite"

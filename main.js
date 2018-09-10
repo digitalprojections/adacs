@@ -79,7 +79,6 @@ var speed_dial_ind = `
   </ons-speed-dial>`;
 
 
-
 function getcurcardetails()
 {
     var et = event.target;
