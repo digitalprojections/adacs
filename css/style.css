@@ -1,4 +1,12 @@
 /**/
+ons-list-item.top_bid {
+    /* margin-bottom: 0px; */
+    border-bottom-width: thin;
+    border-style: solid;
+    border-color: steelblue;
+    border-left-style: none;
+    border-right-style: none;
+}
 .fab--bottom__right {
     right: -55px;
     bottom: 50px;

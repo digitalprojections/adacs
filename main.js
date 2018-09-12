@@ -68,7 +68,7 @@ var speed_dial_ind = `
       <ons-icon icon="md-check" value="Done" onclick="lot_kanri(event)"></ons-icon>
     </ons-speed-dial-item>
     <ons-speed-dial-item style="background-color: #ffd280;">
-      <ons-icon icon="md-help" value="ASK" onclick="lot_kanri(event)"></ons-icon>
+      <ons-icon icon="md-help" value="ask" onclick="lot_kanri(event)"></ons-icon>
     </ons-speed-dial-item>
     <ons-speed-dial-item style="background-color: #ffd4db;">
       <ons-icon icon="md-close-circle" value="Cancel" onclick="lot_kanri(event)"></ons-icon>
@@ -585,10 +585,10 @@ function lot_kanri(event) {
             etppp.classList.remove("cancel");
             if (etppp.classList.contains("ask"))
             {
-                etppp.classList.remove("ASK");
+                etppp.classList.remove("ask");
                 status = "";
             } else {
-                etppp.classList.add("ASK");
+                etppp.classList.add("ask");
             }
             break;
         case "cancel":
