@@ -16,8 +16,12 @@ var sort_type;
 var listtype = "all";
 var session;
 var count_array = [];
+//the following 2 may be the same
 var unique_array = [];
 var current_array = [];
+//
+var unique_lotnumbers = [];
+//
 var new_entries = [];
 var updated_entries = [];
 var ind_lot_lotid;
@@ -45,14 +49,14 @@ var speed_dial_content = `
     <ons-fab style="width:0;">
       <ons-icon icon="md-flag"></ons-icon>
     </ons-fab>
-    <ons-speed-dial-item style="background-color: #cdfdcd;">
-      <ons-icon icon="md-check" value="done" onclick="lot_kanri(event)"></ons-icon>
+    <ons-speed-dial-item style="background-color: #cdfdcd;" value="done" onclick="lot_kanri(event)">
+      <ons-icon icon="md-check"></ons-icon>
     </ons-speed-dial-item>
-    <ons-speed-dial-item style="background-color: #ffd280;">
-      <ons-icon icon="md-help" value="ask" onclick="lot_kanri(event)"></ons-icon>
+    <ons-speed-dial-item style="background-color: #ffd280;" value="ask" onclick="lot_kanri(event)">
+      <ons-icon icon="md-help"></ons-icon>
     </ons-speed-dial-item>
-    <ons-speed-dial-item style="background-color: #ffd4db;">
-      <ons-icon icon="md-close-circle" value="cancel" onclick="lot_kanri(event)"></ons-icon>
+    <ons-speed-dial-item style="background-color: #ffd4db;" value="cancel" onclick="lot_kanri(event)">
+      <ons-icon icon="md-close-circle"></ons-icon>
     </ons-speed-dial-item>
     <ons-speed-dial-item style="background-color: #24ff79;"  onclick="lot_kanri(event)" value="whatsapp">
       <ons-icon icon="md-whatsapp" ></ons-icon>
@@ -347,18 +351,23 @@ function create_unique_list()
                 {
                     if (!checkTime(big_data[i]["created_at"]))
                     {
+                        //will contains new data
                         new_entries.push(big_data[i]["lot_no"]);
                     }
                     if (!checkTime(big_data[i]["updated_at"]))
                     {
+                        //updated rows
                         updated_entries.push(big_data[i]["lot_no"]);
                     }
+                    //all rows
                     unique_array.push(big_data[i]["lot_no"]);
+                    unique_lotnumbers.push(big_data[i]["exlot_no"]);
                 }
             }
         }
         //big_data = undefined;
         current_array = unique_array;
+        get_api_data(unique_lotnumbers);
         show_selected_chunk(startPage, startPage + Number(pager), "lot_no");
     } catch (e)
     {
@@ -392,7 +401,8 @@ function show_big_data(page_data) {
                 if(page_data.length>1)
                 {
                     big_string += `<ons-row><ons-col><ons-icon style='color: orange;' icon='md-folder'></ons-icon></ons-col></ons-row>`;
-
+                } else {
+                    big_string += `<ons-row><ons-col><ons-icon style='color: white;' icon='md-file'></ons-icon></ons-col></ons-row>`;
                 }
 
 
@@ -431,7 +441,7 @@ function show_big_data(page_data) {
             ////console.log(bidprice);
 
             big_string += `
-            <ons-row><ons-col><span class='list-item__title lotno'  lotid='
+            <ons-row class='lotnumber'><ons-col><span class='list-item__title lotno'  lotid='
             ${page_data[i]["id"] }
             ' stupidlot='
             ${page_data[i]["lot_no"] }
@@ -446,7 +456,7 @@ function show_big_data(page_data) {
             ${page_data[i]["remarks"] }
             </span></ons-col></ons-row><ons-row><ons-col class="center-content"><img class='buyer_remark hidden' src='img/glyphicons-188-more.png' lotid='
             ${page_data[i]["id"] }
-            ' onmouseup='show_remarks()'></ons-col></ons-row><ons-row><ons-col class="center-content"><div class='buyer_remarks' onmousedown='show_remark_modal()'></div>
+            ' onmouseup='show_remarks()'></ons-col></ons-row><ons-row class="buyrem"><ons-col class="center-content"><div class='buyer_remarks' onmousedown='show_remark_modal()'></div>
             </ons-col></ons-row></div><div class='typeshiftyear'><ons-row><ons-col><span>
             ${page_data[i]["type"] }
             </span></ons-col></ons-row><ons-row><ons-col><span class='atmt'>
@@ -558,10 +568,10 @@ function lot_kanri(event) {
 
     var et = event.currentTarget;
     try {
-        var etppp = document.getElementsByClassName(et.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("buyer_remark")[0].getAttribute("lotid"))[0];
+        var etppp = document.getElementsByClassName(et.parentElement.parentElement.parentElement.getElementsByClassName("buyer_remark")[0].getAttribute("lotid"))[0];
     } catch (e)
     {
-        var etppp = et.parentElement.parentElement.parentElement.parentElement.parentElement;
+        var etppp = et.parentElement.parentElement.parentElement.parentElement;
     }
 
     //console.log(et.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("buyer_remark")[0]);
@@ -604,7 +614,7 @@ function lot_kanri(event) {
             break;
         case "whatsapp":
             //apply a whatsapp mark to distinguish
-            var ect3p = event.currentTarget.parentElement.parentElement.parentElement;
+            var ect3p = event.currentTarget.parentElement.parentElement;
             shareIt(ect3p);
             break;
     }
