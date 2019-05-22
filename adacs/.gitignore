@@ -1,0 +1,9 @@
+#
+google-services.json
+node_modules/*
+platforms/*
+keystore.private
+build.json
+package.json
+package-lock.json
+nbproject/*

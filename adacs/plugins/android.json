@@ -1,0 +1,38 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cc.fovea.cordova.purchase": {
+      "BILLING_KEY": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqfvxzJg84MeFPyNKfovsqcOKa50D5/wIbCDtoWEVK3n9Uoicru3DFWgoEsiEdLFic73Ar/gVIlJYkkLZDffOI5XhuELElg+FRjA39Lx7+5GXd8qAqFfw3EnBBJ+lIQSYfWkq1u3VAZO9Zb3lHvf/yJr8PK6LX87VtY4URFydxuXpB+ogIOo8IWA+1VRK0UvHZXJLm8LtPfMSpRipwtEoUTwuTqDZGuvzEMLq+WbUKBwcUbeAUSZTct8pukWvP7o+p0zHQFPKPVEIa1HSi8djresOpAxQ+LcYtuQ61arKRurPgd9Fb/foDvYWwSPGAtC7SPswXQknU5vs7YEQY+MZCQIDAQAB",
+      "PACKAGE_NAME": "com.janjapanweb.ajpage"
+    },
+    "cordova-custom-config": {
+      "PACKAGE_NAME": "com.janjapanweb.ajpage"
+    },
+    "cordova-plugin-datepicker": {
+      "PACKAGE_NAME": "com.janjapanweb.ajpage"
+    },
+    "cordova-plugin-firebase": {
+      "PACKAGE_NAME": "com.janjapanweb.ajpage"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "com.janjapanweb.ajpage"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.janjapanweb.ajpage"
+    },
+    "cordova-plugin-x-socialsharing": {
+      "PACKAGE_NAME": "com.janjapanweb.ajpage"
+    }
+  },
+  "dependent_plugins": {
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "com.janjapanweb.ajpage"
+    }
+  }
+}

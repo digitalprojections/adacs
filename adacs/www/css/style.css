@@ -1,0 +1,223 @@
+/**/
+ons-list-item.top_bid {
+    /* margin-bottom: 0px; */
+    border-bottom-width: thin;
+    border-style: solid;
+    border-color: steelblue;
+    border-left-style: none;
+    border-right-style: none;
+}
+.fab--bottom__right {
+    right: -55px;
+    bottom: 50px;
+}
+.type{
+    color: #009933;
+}
+ons-col{
+    padding-left: 2%;
+    padding-right:2%;
+}
+#main_table ons-col{
+    max-width: 25vw;
+    padding-left: 2%;
+    padding-right:2%;
+}
+h3{
+    color:red;
+}
+.center-content{
+    text-align: center;
+    
+}
+#carousel{
+    width: 100%;
+    height: 100%;
+}
+#auction_names{
+margin-bottom: 30px;    
+}
+#start_index{
+    width: 100px;
+    display: compact;
+    margin-bottom: 10px;
+}
+#end_index{
+    width: 100px;
+    display: compact;
+    margin-bottom: 10px;
+}
+#search-range{
+    display: compact;
+    
+}
+hr{
+    margin:20px 5px 15px 5px;
+    border-color: #0076ff55;
+    border-width: thin;
+    border-style: solid;
+}
+textarea#buyer_remark_text{
+    width: 90vw;
+}
+#setting-elements-wrapper{
+    text-align: left;
+    margin-top: 30px;
+    margin-left: 10px;   
+    margin-right: 10px;
+    background-color: white;
+    padding-right: 5px;
+    padding-bottom: 25px;
+}
+span#heading2 {
+    font-size: medium;
+    font-weight: bold;
+}
+.list-item--material__left {
+    display: grid;
+    
+}
+.hidden{
+    display: none;
+}
+.list-item__title {   
+    color: crimson;
+    font-weight: bold;
+}
+span.bidprice {
+    font-size: large;
+    font-weight: bold;
+    padding: 5px;
+}
+
+span.remarks {
+    color: darkorange;
+}
+
+.rightside-lm {
+    /*display: grid;*/
+    min-width: 20vw;
+    padding: 5px;
+    text-align: center;
+}
+
+.typeshiftyear {
+    /*display: grid;*/
+    min-width: 20vw;
+}
+
+.gradecolorkm {
+    display: grid;
+    
+}
+
+.rightside {
+    /*display: flex;*/
+    /*float: left;*/
+}
+
+.rightside div {
+    padding: 1px;
+    /*display: grid;*/
+}
+
+.done{
+    background-color: #cdfdcd;
+    
+}
+.ask{
+    background-color: #ffd280;
+    
+}
+.cancel{
+    background-color: #ffd4db;
+    
+}
+
+div.buyer_remarks {
+    font-size: small;    
+    min-width: 20px;
+    min-height: 10px;
+    max-height: 40px;
+    word-wrap: break-word;    
+    cursor: text;    
+    background-color: aliceblue;
+    border-radius: 10px;
+    padding: 2px!important;    
+    color: blue;
+    text-align: center;
+}
+.left.list-item__left {
+    display: block;
+    width: 20vw;
+}
+
+div#indinput{
+    min-height: 20px;
+    background-color: aliceblue;
+    border-radius: 3px;
+    padding: 5px;
+    margin-top: 5px;
+    color: blue;
+}
+
+ons-list-item.new_data_undefined {
+    background-image: url("../img/new.png");
+    background-position: center;
+    background-repeat: repeat;
+}
+ons-list-item.new_price_undefined {
+    background-image: url("../img/update.png");
+    background-position: center;
+    background-repeat: repeat;
+}
+body{
+    font-size: small;
+}
+.indimg{
+    width: 100%;
+}
+.secondary {
+    box-shadow: inset 0 0 14px 0px #ff7373;
+}
+@media screen and (orientation: portrait){
+.indimg_sheet{
+    width: 100%;
+    height: 50vh;
+}
+}
+@media screen and (orientation: landscape){
+.indimg_sheet{
+    width: 100%;
+    height: 85vh;
+}
+}
+@media (min-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */ }
+@media (min-width:481px)  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */ }
+@media (min-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ }
+@media (min-width:961px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */ }
+@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */ 
+.list-item__thumbnail {
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    display: block;
+    margin: 0;
+}
+span.bidprice {
+    font-size: xx-large;
+    font-weight: bold;
+    padding: 5px;
+}
+.lotno{
+    font-size: xx-large;
+    margin: 6px;
+    float: left;
+}
+.carname{
+    font-size: large;
+    margin: 6px;
+    float: left;
+}
+}
+@media (min-width:1281px) { /* hi-res laptops and desktops */ }
