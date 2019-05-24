@@ -1,4 +1,4 @@
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -7,7 +7,7 @@ var database_url = "https://ajpage.janjapanweb.com/ajphp_v41.php"; //JJpurchase
 var username = Boolean(localStorage.username) ? localStorage.username : "";
 var password = Boolean(localStorage.password) ? localStorage.password : "";
 var pager = !Boolean(localStorage.getItem("pager")) ? 10 : localStorage.getItem("pager");
-var startPage = 0; //pager value is the number of items/request results from this point onwards (indices of uniqunique_array) 
+var startPage = 0; //pager value is the number of items/request results from this point onwards (indices of uniqunique_array)
 var today;
 var big_data = [];
 var page_data = [];
@@ -16,8 +16,12 @@ var sort_type;
 var listtype = "all";
 var session;
 var count_array = [];
+//the following 2 may be the same
 var unique_array = [];
 var current_array = [];
+//
+var unique_lotnumbers = [];
+//
 var new_entries = [];
 var updated_entries = [];
 var ind_lot_lotid;
@@ -44,26 +48,26 @@ var speed_dial_content = `
   <ons-speed-dial position="bottom right" direction="left">
     <ons-fab style="width:0;">
       <ons-icon icon="md-flag"></ons-icon>
-    </ons-fab>    
-    <ons-speed-dial-item style="background-color: #cdfdcd;">
-      <ons-icon icon="md-check" value="done" onclick="lot_kanri(event)"></ons-icon>
+    </ons-fab>
+    <ons-speed-dial-item style="background-color: #cdfdcd;" value="done" onclick="lot_kanri(event)">
+      <ons-icon icon="md-check"></ons-icon>
     </ons-speed-dial-item>
-    <ons-speed-dial-item style="background-color: #ffd280;">
-      <ons-icon icon="md-help" value="ask" onclick="lot_kanri(event)"></ons-icon>
+    <ons-speed-dial-item style="background-color: #ffd280;" value="ask" onclick="lot_kanri(event)">
+      <ons-icon icon="md-help"></ons-icon>
     </ons-speed-dial-item>
-    <ons-speed-dial-item style="background-color: #ffd4db;">
-      <ons-icon icon="md-close-circle" value="cancel" onclick="lot_kanri(event)"></ons-icon>
-    </ons-speed-dial-item>    
+    <ons-speed-dial-item style="background-color: #ffd4db;" value="cancel" onclick="lot_kanri(event)">
+      <ons-icon icon="md-close-circle"></ons-icon>
+    </ons-speed-dial-item>
     <ons-speed-dial-item style="background-color: #24ff79;"  onclick="lot_kanri(event)" value="whatsapp">
       <ons-icon icon="md-whatsapp" ></ons-icon>
-    </ons-speed-dial-item>        
+    </ons-speed-dial-item>
   </ons-speed-dial>`;
 
 var speed_dial_ind = `
   <ons-speed-dial position="bottom right" direction="left" style="bottom:-50px">
     <ons-fab style="width:0;">
       <ons-icon icon="md-flag"></ons-icon>
-    </ons-fab>    
+    </ons-fab>
     <ons-speed-dial-item style="background-color: #cdfdcd;">
       <ons-icon icon="md-check" value="Done" onclick="lot_kanri(event)"></ons-icon>
     </ons-speed-dial-item>
@@ -72,10 +76,10 @@ var speed_dial_ind = `
     </ons-speed-dial-item>
     <ons-speed-dial-item style="background-color: #ffd4db;">
       <ons-icon icon="md-close-circle" value="Cancel" onclick="lot_kanri(event)"></ons-icon>
-    </ons-speed-dial-item>    
+    </ons-speed-dial-item>
     <ons-speed-dial-item style="background-color: #24ff79;"  onclick="lot_kanri(event)" value="whatsapp">
       <ons-icon icon="md-whatsapp" ></ons-icon>
-    </ons-speed-dial-item>        
+    </ons-speed-dial-item>
   </ons-speed-dial>`;
 
 
@@ -338,7 +342,7 @@ function create_unique_list()
             if (Number(lotno) >= Number(startIndex) && Number(lotno) <= Number(endIndex))
             {
 //big_data[i]["detail_link"]:
-//big_data[i]["start_price"]:                
+//big_data[i]["start_price"]:
 //big_data[i]["chassis_code"]:
 //big_data[i]["extension"]:
 //big_data[i]["auction_sheet"]:
@@ -347,18 +351,23 @@ function create_unique_list()
                 {
                     if (!checkTime(big_data[i]["created_at"]))
                     {
+                        //will contains new data
                         new_entries.push(big_data[i]["lot_no"]);
                     }
                     if (!checkTime(big_data[i]["updated_at"]))
                     {
+                        //updated rows
                         updated_entries.push(big_data[i]["lot_no"]);
                     }
+                    //all rows
                     unique_array.push(big_data[i]["lot_no"]);
+                    unique_lotnumbers.push(big_data[i]["exlot_no"]);
                 }
             }
         }
         //big_data = undefined;
         current_array = unique_array;
+        get_api_data(unique_lotnumbers);
         show_selected_chunk(startPage, startPage + Number(pager), "lot_no");
     } catch (e)
     {
@@ -368,7 +377,7 @@ function create_unique_list()
 
 
 //page_data[i]["detail_link"]:
-//page_data[i]["start_price"]:                
+//page_data[i]["start_price"]:
 //page_data[i]["chassis_code"]:
 //page_data[i]["extension"]:
 //page_data[i]["auction_sheet"]:
@@ -378,28 +387,29 @@ function show_big_data(page_data) {
 
     page_data.sort(function (a, b) {
         return Number(a.lot_no.substr(a.lot_no.indexOf("//") + 2)) - Number(b.lot_no.substr(b.lot_no.indexOf("//") + 2)) || getRealNumber(Number(b.bid_price)) - getRealNumber(Number(a.bid_price));
-    });    
+    });
     for (i in page_data) {
         var lotno = page_data[i]["exlot_no"];
-        
+
         if (Number(lotno) >= Number(startIndex) && Number(lotno) <= Number(endIndex))
         {
-            
+
             if (i == 0)
             {
                 //lazy image
                 big_string += `<ons-list-item tappable class='top_bid ${page_data[i]["id"] } new_data_${checkTime(page_data[i]["created_at"]) } new_price_${ checkTime(page_data[i]["updated_at"]) }' onmousedown='toggle_children(event)'><div class='left'><ons-row><ons-col><img class='list-item__thumbnail' src='${ getOldURL(page_data[i]["front_image"]) }' onmousedown='getcurcardetails(event)' lotid='${page_data[i]["id"]}'></ons-col></ons-row>`;
                 if(page_data.length>1)
                 {
-                    big_string += `<ons-row><ons-col><ons-icon style='color: orange;' icon='md-folder'></ons-icon></ons-col></ons-row>`;                 
-                    
+                    big_string += `<ons-row><ons-col><ons-icon style='color: orange;' icon='md-folder'></ons-icon></ons-col></ons-row>`;
+                } else {
+                    big_string += `<ons-row><ons-col><ons-icon style='color: white;' icon='md-file'></ons-icon></ons-col></ons-row>`;
                 }
-                
+
 
             } else {
                 //<ion-icon name="arrow-round-up"></ion-icon>
                 big_string += `<ons-list-item tappable class='secondary hidden ${page_data[i]["id"] } losing new_data_${ checkTime(page_data[i]["created_at"]) } new_price_${ checkTime(page_data[i]["updated_at"]) }' onmousedown='toggle_children(event)'><div class='left'><ons-row><ons-col><ons-icon style="color: orange;" icon="md-long-arrow-up"></ons-icon></ons-col></ons-row>`;
-                
+
 
             }
             var bidprice = page_data[i]["bid_price"];
@@ -431,7 +441,7 @@ function show_big_data(page_data) {
             ////console.log(bidprice);
 
             big_string += `
-            <ons-row><ons-col><span class='list-item__title lotno'  lotid='
+            <ons-row class='lotnumber'><ons-col><span class='list-item__title lotno'  lotid='
             ${page_data[i]["id"] }
             ' stupidlot='
             ${page_data[i]["lot_no"] }
@@ -444,9 +454,10 @@ function show_big_data(page_data) {
             ${bidprice }
             </span></ons-col></ons-row><ons-row><ons-col><span  class='remarks'>
             ${page_data[i]["remarks"] }
-            </span></ons-col></ons-row><ons-row><ons-col class="center-content"><img class='buyer_remark hidden' src='img/glyphicons-188-more.png' lotid='
+            </span></ons-col></ons-row><ons-row><ons-col class="center-content"><img class='buyer_remark hidden' src='img/glyphicons-188-more.png' exlot_no='
+            ${page_data[i]["exlot_no"] }' lotid='
             ${page_data[i]["id"] }
-            ' onmouseup='show_remarks()'></ons-col></ons-row><ons-row><ons-col class="center-content"><div class='buyer_remarks' onmousedown='show_remark_modal()'></div>
+            ' onmouseup='show_remarks()'></ons-col></ons-row><ons-row class="buyrem"><ons-col class="center-content"><div class='buyer_remarks' onmousedown='show_remark_modal()'></div>
             </ons-col></ons-row></div><div class='typeshiftyear'><ons-row><ons-col><span>
             ${page_data[i]["type"] }
             </span></ons-col></ons-row><ons-row><ons-col><span class='atmt'>
@@ -468,7 +479,7 @@ function show_big_data(page_data) {
             </span></ons-col></ons-row><ons-row><ons-col></div></ons-list-item>`;
         }
     }
-    
+
     if (Boolean(check_kaishusu(page_data)))
     {
         //a potential for future use. Old data creep in issue can be caught here
@@ -488,12 +499,12 @@ function cancel_remark_found(bigdata)
 {
     //console.log(bigdata);
     var bul;
-   
+
         if (bigdata.querySelector(".remarks").innerText.indexOf("x")>=0 || bigdata.querySelector(".bidprice").innerText.indexOf("x")>=0)
         {
             bul = true;
         }
-    
+
     return bul;
 }
 function get_current_onsrow_index(g, onsrows) {
@@ -536,7 +547,7 @@ function toggle_children(event)
                 }
                 console.log("looping ", onsrows[i]);
             } else {
-//check the next row as item                        
+//check the next row as item
                 console.log("loop end");
                 break;
             }
@@ -558,10 +569,10 @@ function lot_kanri(event) {
 
     var et = event.currentTarget;
     try {
-        var etppp = document.getElementsByClassName(et.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("buyer_remark")[0].getAttribute("lotid"))[0];
+        var etppp = document.getElementsByClassName(et.parentElement.parentElement.parentElement.getElementsByClassName("buyer_remark")[0].getAttribute("lotid"))[0];
     } catch (e)
     {
-        var etppp = et.parentElement.parentElement.parentElement.parentElement.parentElement;
+        var etppp = et.parentElement.parentElement.parentElement.parentElement;
     }
 
     //console.log(et.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("buyer_remark")[0]);
@@ -604,7 +615,7 @@ function lot_kanri(event) {
             break;
         case "whatsapp":
             //apply a whatsapp mark to distinguish
-            var ect3p = event.currentTarget.parentElement.parentElement.parentElement;
+            var ect3p = event.currentTarget.parentElement.parentElement;
             shareIt(ect3p);
             break;
     }
@@ -633,7 +644,7 @@ function shareIt(ect3p)
 
                 });
             } catch (e) {
-                
+
             }
             }
             else {
@@ -650,7 +661,7 @@ function shareIt(ect3p)
                     text: company_name + ", lot: " + $("#exlot")[0].innerText + ", bid: " + $("#bidprice")[0].innerText + ", buyer: " + $("#indinput").text() + ", auction sheet:" + $("img")[0].src + " front image:" + $("img")[1].src,
                 });
             }
-            }            
+            }
         }
     }
 
@@ -692,6 +703,8 @@ function show_calendar() {
     if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android)/i)) {
         console.log(navigator.userAgent);
         datePicker.show(options, onSuccess, onError);
+    } else {
+
     }
 }
 
@@ -785,7 +798,7 @@ document.addEventListener('show', function (event) {
             $("#changeuser_but").show();
             $("#new_but").show();
             $("#settings_but").show();
-            //$("#refresh_but").show();            
+            //$("#refresh_but").show();
             $("ons-list-item.done").show();
             $("ons-list-item.ask").show();
             $("ons-list-item.cancel").show();
@@ -794,7 +807,7 @@ document.addEventListener('show', function (event) {
             break;
         case "auctions":
             $("#changeuser_but").show();
-            //$("#refresh_but").show();            
+            //$("#refresh_but").show();
             break;
         case "details_page":
             $("#settings_but").show();
@@ -813,7 +826,7 @@ document.addEventListener('show', function (event) {
             $("ons-list-item.done").hide();
             $("ons-list-item.ask").hide();
             $("ons-list-item.cancel").hide();
-            $("ons-list-item.new").hide();            
+            $("ons-list-item.new").hide();
             break;
         case "settings":
             $("#changeuser_but").show();
@@ -987,7 +1000,7 @@ function checkTime(ct)
         //CLEARING YEAR
         if (today.getFullYear() == d.getFullYear())
         {
-//this or previous month OK    
+//this or previous month OK
             if (today.getMonth() == d.getMonth())
             {
 //clearing date
@@ -1107,7 +1120,7 @@ window.fn.load = function (page) {
             break;
         case "details":
             fn.load("details_page.html");
-            //show details;            
+            //show details;
             break;
         default:
             var content = document.getElementById('content');

@@ -14,7 +14,7 @@ window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || 
 };
 IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
 if (!window.indexedDB) {
-    window.alert("Your browser doesn't support a stable version of IndexedDB. Some features will not be available.");
+    window.alert("Your browser doesn't support a stable version of IndexedDB. Data will not be available.");
 } else {
 //start
 //console.log("indexdb can be initiated");
@@ -38,7 +38,7 @@ function manage_object_stores(bdbName, storeName, rd) {
         console.log("checking the store", bdb);
         if (bdb.objectStoreNames.contains(storeName))
         {
-            //the storeName exists. Call startTransaction            
+            //the storeName exists. Call startTransaction
             console.log("secondRequest");
 
         } else {
@@ -188,7 +188,7 @@ function show_selected_chunk(i, endPos, indexName)
                 console.log("i:", i, "startPage:", startPage, "endPos:", endPos, "current_array.length:", current_array.length);
                 show_final_result();
             }
-            //            
+            //
         }
     };
     request.onerror = function (e)
@@ -198,7 +198,7 @@ function show_selected_chunk(i, endPos, indexName)
 }
 
 function show_final_result() {
-    console.log('sample data', big_string.substr(0, 100));
+    //console.log('sample data', big_string.substr(0, 100));
     $("#main_table").html(big_string);
     big_string = "";
     document.querySelector('#loading_circle').hide();
@@ -207,6 +207,7 @@ function show_final_result() {
         this.getByLotid = get_by_lotid;
         this.idbAddLot = idb_add_lot;
         this.updateLot = update_entry;
+        this.updateLotImage = update_entries;
         this.saveStatus = save_status;
         this.getByLotid(); //also get the status?
     });
@@ -242,12 +243,12 @@ function show_final_result() {
         }
         else {
             if (Boolean(cancel_remark_found(lis[j])))
-            {                
+            {
                 console.log("OK sublot");
                 var orow = document.createElement("ons-row");
                 orow.innerHTML = `<ons-col><ons-icon class="alertprice" style='color:red;' icon='md-alert-triangle'></ons-icon></ons-col>`;
                 ttop.querySelector(".rightside-lm").appendChild(orow);
-            } 
+            }
             }
     }
 
@@ -283,6 +284,45 @@ function update_entry()
         };
     };
 }
+function update_entries()
+{
+    var caller = this;
+    var objectStore = bdb.transaction([storeName], "readwrite").objectStore(storeName);
+    console.log(Number(caller.getAttribute("exlot_no")));
+    //var request = objectStore.getAll("1254//" + item.LOT);
+    var index_lot = objectStore.index('exlot_no');
+    var request = index_lot.getAll(Number(caller.getAttribute("exlot_no")));
+
+    request.onerror = function (event) {
+        // Handle errors!
+        console.log(request);
+    };
+    request.onsuccess = function (event) {
+        // Get the old value that we want to update
+        var data = event.target.result;
+        // update the value(s) in the object that you want to change
+        console.log(data);
+
+        data[0].auction_sheet = myjson[0].IMAGES.split("#")[0];
+        data[0].front_image = myjson[0].IMAGES.split("#")[1];
+        data[0].id = myjson[0].ID;
+
+
+
+        // Put this updated object back into the database.
+        var requestUpdate = objectStore.put(data[0]);
+        requestUpdate.onerror = function (event) {
+            // Do something with the error
+            console.log(event);
+        };
+        requestUpdate.onsuccess = function (event) {
+            // Success - the data is updated!
+            console.log(event, "UPDATED!!!");
+            caller.getByLotid();
+        };
+
+    };
+}
 
 ////console.log(rowdata);
 function check_store(ind) {
@@ -304,7 +344,7 @@ function check_store(ind) {
 }
 
 function startTransaction(rd) {
-    //console.log(rd.length, "startTransaction");
+
     var request = indexedDB.open(bdbName);
     request.onsuccess = function (e) {
         bdb = e.target.result;
@@ -355,7 +395,7 @@ function startTransaction(rd) {
         //console.log(event);
     }
 }
-//test delete 
+//test delete
 function retrieveData() {
     if (rowdata.length == 0) {
         var request = indexedDB.open(bdbName);
@@ -442,7 +482,7 @@ function updateResult() {
             }
 
 
-////console.log(cursor.value.albumTitle, cursor.value.year);      
+////console.log(cursor.value.albumTitle, cursor.value.year);
             cursor.continue();
         } else {
             //console.log('Entries displayed.');
