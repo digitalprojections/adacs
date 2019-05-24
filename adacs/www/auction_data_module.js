@@ -207,6 +207,7 @@ function show_final_result() {
         this.getByLotid = get_by_lotid;
         this.idbAddLot = idb_add_lot;
         this.updateLot = update_entry;
+        this.updateLotImage = update_entries;
         this.saveStatus = save_status;
         this.getByLotid(); //also get the status?
     });
@@ -283,13 +284,14 @@ function update_entry()
         };
     };
 }
-function update_entries(item)
+function update_entries()
 {
+    var caller = this;
     var objectStore = bdb.transaction([storeName], "readwrite").objectStore(storeName);
-    console.log(objectStore);
+    console.log(Number(caller.getAttribute("exlot_no")));
     //var request = objectStore.getAll("1254//" + item.LOT);
-    var index = objectStore.index("exlot_no");
-    var request = index.openCursor(IDBKeyRange.only(item.LOT));
+    var index_lot = objectStore.index('exlot_no');
+    var request = index_lot.getAll(Number(caller.getAttribute("exlot_no")));
 
     request.onerror = function (event) {
         // Handle errors!
@@ -300,21 +302,25 @@ function update_entries(item)
         var data = event.target.result;
         // update the value(s) in the object that you want to change
         console.log(data);
-        data.auction_sheet = item.IMAGES.split("#")[0];
-        data.front_image = item.IMAGES.split("#")[1];
-        data.AJID = item.ID;
+
+        data[0].auction_sheet = myjson[0].IMAGES.split("#")[0];
+        data[0].front_image = myjson[0].IMAGES.split("#")[1];
+        data[0].id = myjson[0].ID;
+
+
 
         // Put this updated object back into the database.
-        var requestUpdate = objectStore.put(data);
+        var requestUpdate = objectStore.put(data[0]);
         requestUpdate.onerror = function (event) {
             // Do something with the error
-            //console.log(event);
+            console.log(event);
         };
         requestUpdate.onsuccess = function (event) {
             // Success - the data is updated!
-            //console.log(event);
+            console.log(event, "UPDATED!!!");
             caller.getByLotid();
         };
+
     };
 }
 
@@ -338,7 +344,7 @@ function check_store(ind) {
 }
 
 function startTransaction(rd) {
-    //console.log(rd.length, "startTransaction");
+
     var request = indexedDB.open(bdbName);
     request.onsuccess = function (e) {
         bdb = e.target.result;
