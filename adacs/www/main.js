@@ -454,7 +454,8 @@ function show_big_data(page_data) {
             ${bidprice }
             </span></ons-col></ons-row><ons-row><ons-col><span  class='remarks'>
             ${page_data[i]["remarks"] }
-            </span></ons-col></ons-row><ons-row><ons-col class="center-content"><img class='buyer_remark hidden' src='img/glyphicons-188-more.png' lotid='
+            </span></ons-col></ons-row><ons-row><ons-col class="center-content"><img class='buyer_remark hidden' src='img/glyphicons-188-more.png' exlot_no='
+            ${page_data[i]["exlot_no"] }' lotid='
             ${page_data[i]["id"] }
             ' onmouseup='show_remarks()'></ons-col></ons-row><ons-row class="buyrem"><ons-col class="center-content"><div class='buyer_remarks' onmousedown='show_remark_modal()'></div>
             </ons-col></ons-row></div><div class='typeshiftyear'><ons-row><ons-col><span>
